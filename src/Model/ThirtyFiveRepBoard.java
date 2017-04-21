@@ -59,31 +59,31 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || location + 8 == originalLocation))
 					if(_set[location + 4].getColor().equals("White"))
 						possibleMoves.add("JL");
-			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || location + 8 == originalLocation))
+			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || location + 10 == originalLocation))
 					if(_set[location + 5].getColor().equals("White"))
 						possibleMoves.add("JR");
 			if(kinged){
-				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || location + 8 == originalLocation))
+				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || location - 10 == originalLocation))
 						if(_set[location - 5].getColor().equals("White"))
 							possibleMoves.add("JBL");
-				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || location + 8 == originalLocation))
+				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || location - 8 == originalLocation))
 						if(_set[location - 4].getColor().equals("White"))
 							possibleMoves.add("JBR");
 			}
 		}
 		
 		if(piece.getColor().equals("White")){
-			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || location + 8 == originalLocation))
+			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || location - 10 == originalLocation))
 					if(_set[location - 5].getColor().equals("Black"))
 						possibleMoves.add("JL");
-			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || location + 8 == originalLocation))
+			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || location - 8 == originalLocation))
 					if(_set[location - 4].getColor().equals("Black"))
 						possibleMoves.add("JR");
 			if(kinged){
 				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || location + 8 == originalLocation))
 						if(_set[location + 4].getColor().equals("Black"))
 							possibleMoves.add("JBL");
-				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || location + 8 == originalLocation))
+				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || location + 10 == originalLocation))
 						if(_set[location + 5].getColor().equals("Black"))
 							possibleMoves.add("JBR");
 			}
