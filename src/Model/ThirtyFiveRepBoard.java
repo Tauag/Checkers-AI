@@ -459,6 +459,51 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (apexheuristic(player) * WeightConstants._APEX);
 		if(ControllerConstants._BACK)
 			heuristicScore += (backheuristic(player) * WeightConstants._BACK);
+		if(ControllerConstants._CENT)
+			heuristicScore += (centheuristic(player) * WeightConstants._CENT);
+		if(ControllerConstants._CNTR)
+			heuristicScore += (cntrheuristic(player) * WeightConstants._CNTR);
+		
+		return heuristicScore;
+	}
+	
+	/*
+	 * The parameter is credited with 1 for each passive man in the 5th and 6th rows
+	 * (in the direction of the player) and debited 1 for each passive man in the 
+	 * 3rd and 4th rows
+	 */
+	public int advheuristic(String player){
+		int heuristicScore = 0;
+		if(player.equals("White")){
+			int[] advancingRow = {4, 5, 6, 7, 9, 10, 11, 12};
+			int[] defendingRow = {13, 14, 15, 16, 18, 19, 20, 21};
+			
+			for(int pos : advancingRow){
+				if(_set[pos] != null)
+					if(_set[pos].getColor().equals(player) && !(isActive(pos, _set[pos])))
+						heuristicScore++;
+			}
+			for(int pos : defendingRow){
+				if(_set[pos] != null)
+					if(_set[pos].getColor().equals(player) && !(isActive(pos, _set[pos])))
+						heuristicScore--;
+			}
+		}
+		else{
+			int[] advancingRow = {22, 23, 24, 25, 27, 28, 29, 30};
+			int[] defendingRow = {13, 14, 15, 16, 18, 19, 20, 21};
+			
+			for(int pos : advancingRow){
+				if(_set[pos] != null)
+					if(_set[pos].getColor().equals(player) && !(isActive(pos, _set[pos])))
+						heuristicScore++;
+			}
+			for(int pos : defendingRow){
+				if(_set[pos] != null)
+					if(_set[pos].getColor().equals(player) && !(isActive(pos, _set[pos])))
+						heuristicScore--;
+			}
+		}
 		
 		return heuristicScore;
 	}
@@ -521,5 +566,39 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			return 1;
 		else
 			return 0;
+	}
+	
+	/*
+	 * The parameter is credited with 1 for each of the following squares: 
+	 * 10, 11, 14, 15, 19, 20, 23 and 24 which is occupied by a passive man.
+	 */
+	public int centheuristic(String player){
+		int[] centerPositions = {10, 11, 14, 15, 19, 20, 23, 24};
+		int heuristicScore = 0;
+		
+		for(int pos : centerPositions){
+			if(_set[pos] != null)
+				if(_set[pos].getColor().equals(player) && !(isActive(pos, _set[pos])))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+	
+	/*
+	 * The parameter is credited with 1 for each of the following squares: 
+	 * 10, 11, 14, 15, 19, 20, 23 and 24 that is either currently occupied by an active piece
+	 */
+	public int cntrheuristic(String player){
+		int[] centerPositions = {10, 11, 14, 15, 19, 20, 23, 24};
+		int heuristicScore = 0;
+		
+		for(int pos : centerPositions){
+			if(_set[pos] != null)
+				if(_set[pos].getColor().equals(player) && isActive(pos, _set[pos]))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
 	}
 }
