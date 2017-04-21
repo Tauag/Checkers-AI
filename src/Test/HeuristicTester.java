@@ -7,50 +7,37 @@ import Controller.AlphaBeta;
 import Model.CheckersGameState;
 import Model.Move;
 import Model.ThirtyFiveRepBoard;
+import Model.ThirtyFiveRepCheckerPiece;
 
 public class HeuristicTester {
 	public static void main(String[] args) {
-//		CheckersGameState cb = new ThirtyFiveRepBoard();
-//		Scanner input = new Scanner(System.in);
-//		int choice, sz;
-//		
-//		System.out.println("Please note that error checks for bad user inputs are not implemented. Please follow the directions");
-//		
-//		int i = 0;
-//		int curr;
-//		while(i < 35){
-//			curr = i;
-//			while(i < curr + 4){
-//				System.out.print("-" + Integer.toString(i));
-//				i++;
-//			}
-//			System.out.println();
-//			curr = i;
-//			while(i < curr + 4){
-//				System.out.print(Integer.toString(i) + "-");
-//				i++;
-//			}
-//			i++;
-//			System.out.println();
-//		}	
-//		Random rand = new Random();
-//		cb.printState();
-//		while(!cb.isTerminal()){
-//			System.out.println("**********************************");
-//			if(!cb.actions().isEmpty()){
-//				sz = cb.actions().size();
-//				choice = rand.nextInt(sz);
-//				System.out.println(cb.actions().get(choice));
-//				cb = cb.result(cb.actions().get(choice));
-//			}
-//			cb.printState();
-//		}
 		centerTest();
 	}
 	
 	public static void centerTest() {
-		ThirtyFiveRepBoard tb = new ThirtyFiveRepBoard();
-		tb.printState();
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+
+		set[10] = new ThirtyFiveRepCheckerPiece("Black");
+		set[11] = new ThirtyFiveRepCheckerPiece("White");
+		
+		set[14] = new ThirtyFiveRepCheckerPiece("White");
+		set[15] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		set[19] = new ThirtyFiveRepCheckerPiece("White");
+		set[20] = new ThirtyFiveRepCheckerPiece("White");
+		
+//		set[23] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[24] = new ThirtyFiveRepCheckerPiece("White");
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		System.out.println("Center heuristic test for passive man");
+		state.printState();
+		
+		System.out.print("Heuristic For Black: ");
+		state.centheuristic("Black"); 
+		
+		System.out.print("Heuristic For White: ");
+		state.centheuristic("White");
 		
 	}
 }
