@@ -1,8 +1,5 @@
 package Test;
 
-// Also testing bleh
-
-import java.util.Random;
 import java.util.Scanner;
 import Controller.AlphaBeta;
 import Model.CheckersGameState;
