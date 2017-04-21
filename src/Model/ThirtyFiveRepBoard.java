@@ -464,19 +464,19 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 	
 	/*
-	 * -1 if there are no kings, positions 6 and 25 are not filled with active pieces and neither of them are 
+	 * -1 if there are no kings, positions 6 and 28 are not filled with active pieces and neither of them are 
 	 * filled with passive pieces
 	 */
 	public int apexheuristic(String player){
 		boolean noKings = false, bothActive = false, neitherPassive = true;
 		
-		if(_set[6] != null){
+		if(_set[6] != null && _set[6].getColor().equals(player)){
 			bothActive |= isActive(6, _set[6]);
 			neitherPassive &= isActive(6, _set[6]);
 		}
-		if(_set[25] != null){
-			bothActive |= isActive(25, _set[25]);
-			neitherPassive &= isActive(25, _set[25]);
+		if(_set[28] != null && _set[28].getColor().equals(player)){
+			bothActive |= isActive(28, _set[28]);
+			neitherPassive &= isActive(28, _set[28]);
 		}
 		for(ThirtyFiveRepCheckerPiece piece : _set){
 			if(piece != null)
@@ -490,8 +490,36 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			return 0;
 	}
 	
+	/*
+	 * The parameter is credited with 1 if there are no active kings on the board 
+	 * and if the two bridge squares (0 and 2, or 32 and 34) in the back row 
+	 * are occupied by passive pieces.
+	 */
 	public int backheuristic(String player){
-		// TODO
-		return 0;
+		boolean noActiveKings = true, bridgePassiveOccupation = true;
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null)
+				if(_set[i].isKing() && isActive(i, _set[i]))
+					noActiveKings = false;
+		}
+		
+		if(player.equals("Black")){
+			if(_set[0] != null)
+				bridgePassiveOccupation &= (_set[0].getColor().equals("Black") && !(isActive(0, _set[0])));
+			if(_set[2] != null)
+				bridgePassiveOccupation &= (_set[2].getColor().equals("Black") && !(isActive(2, _set[2])));
+		}
+		else{
+			if(_set[32] != null)
+				bridgePassiveOccupation &= (_set[32].getColor().equals("Black") && !(isActive(32, _set[32])));
+			if(_set[2] != null)
+				bridgePassiveOccupation &= (_set[34].getColor().equals("Black") && !(isActive(34, _set[34])));
+		}
+		
+		if(noActiveKings && bridgePassiveOccupation)
+			return 1;
+		else
+			return 0;
 	}
 }
