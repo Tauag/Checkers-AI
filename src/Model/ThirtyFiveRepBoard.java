@@ -618,12 +618,19 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 	
 	/*
-	 * The parameter is credited with 2 if the passive side occupies the cramping square 
-	 * (13 for Black, and 20 for White) and at least one other nearby square 
-	 * (9 or 14 for Black, and 19 or 20 for White), while certain squares 
-	 * (17, 21, 22 and 25 for Black, and 8, 11, 12 and 16 for White) are all occupied by the active side
+	 * The parameter is credited with 1 for each of the following squares: 
+	 * 10, 11, 14, 15, 19, 20, 23 and 24 which is occupied by a passive king
 	 */
-	public int crampheuristic(String player){
-		if(player.equals("Black"))
+	public int kcentheuristic(String player){
+		int[] centerPositions = {10, 11, 14, 15, 19, 20, 23, 24};
+		int heuristicScore = 0;
+		
+		for(int pos : centerPositions){
+			if(_set[pos] != null)
+				if(_set[pos].getColor().equals(player) && _set[pos].isKing() && !(isActive(pos, _set[pos])))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
 	}
 }
