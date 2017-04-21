@@ -498,27 +498,35 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	 */
 	public boolean isPole(int location, ThirtyFiveRepCheckerPiece piece){
 		if(piece.getColor().equals("Black")){
-			if(!(isValid(location) && isValid(location + 4) && _set[location + 4] == null))
-				return false;
-			if(!(isValid(location) && isValid(location + 5) && _set[location + 5] == null))
-				return false;
+			if(isValid(location + 4))
+				if(!(_set[location + 4] == null))
+					return false;
+			if(isValid(location + 5))
+				if(!(_set[location + 5] == null))
+					return false;
 			if(piece.isKing()){
-				if(!(isValid(location) && isValid(location - 5) && _set[location - 5] == null))
-					return false;
-				if(!(isValid(location) && isValid(location - 4) && _set[location - 4] == null))
-					return false;
+				if(isValid(location - 5))
+					if(!(_set[location - 5] == null))
+						return false;
+				if(isValid(location - 4))
+					if(!(_set[location - 4] == null))
+						return false;
 			}
 		}
 		else{
-			if(!(isValid(location) && isValid(location - 5) && _set[location - 5] == null))
-				return false;
-			if(!(isValid(location) && isValid(location - 4) && _set[location - 4] == null))
-				return false;
+			if(isValid(location - 5))
+				if(!(_set[location - 5] == null))
+					return false;
+			if(isValid(location - 4))
+				if(!(_set[location - 4] == null))
+					return false;
 			if(piece.isKing()){
-				if(!(isValid(location) && isValid(location + 4) && _set[location + 4] == null))
-					return false;
-				if(!(isValid(location) && isValid(location + 5) && _set[location + 5] == null))
-					return false;
+				if(isValid(location + 4))
+					if(!(_set[location + 4] == null))
+						return false;
+				if(isValid(location + 5))
+					if(!(_set[location + 5] == null))
+						return false;
 			}
 		}
 		
