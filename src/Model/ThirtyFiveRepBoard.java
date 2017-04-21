@@ -535,6 +535,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	public int analyze(String player){
 		int heuristicScore = 0;
 		
+		if(ControllerConstants._ADV)
+			heuristicScore += (advheuristic(player) * WeightConstants._ADV);
 		if(ControllerConstants._APEX)
 			heuristicScore += (apexheuristic(player) * WeightConstants._APEX);
 		if(ControllerConstants._BACK)
