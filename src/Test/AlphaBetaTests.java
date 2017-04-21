@@ -5,13 +5,13 @@ import Controller.AlphaBeta;
 import Model.CheckersGameState;
 import Model.Move;
 import Model.ThirtyFiveRepBoard;
+import Model.ThirtyFiveRepCheckerPiece;
 
 public class AlphaBetaTests
 {
 	public static void main(String[] args)
 	{
-		CheckersGameState cb = new ThirtyFiveRepBoard();
-		AlphaBeta test= new AlphaBeta();
+		AlphaBetaTests obj = new AlphaBetaTests();
 		Scanner input = new Scanner(System.in);
 
 		System.out.println("Please note that error checks for bad user inputs are not implemented. Please follow the directions");
@@ -39,10 +39,24 @@ public class AlphaBetaTests
 			i++;
 			System.out.println();
 		}
-		System.out.println("****************************************************************");
-		cb.printState();
-		Move move = test.alphabeta(cb, 5);
+		
+		obj.apexTest();
+	}
+	
+	public void apexTest()
+	{
+		System.out.println("APEX TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		AlphaBeta tester = new AlphaBeta();
+
+		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+		set[28] = new ThirtyFiveRepCheckerPiece("White");
+		
+		CheckersGameState state = new ThirtyFiveRepBoard(set);
+		state.printState();
+		
+		Move move = tester.alphabeta(state, 5);
 		System.out.println(move);
 		
-		}
 	}
+}
