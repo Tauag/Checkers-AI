@@ -334,7 +334,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		else{
 			if(x.isKing())
-				return "w";
+				return "W";
 			else
 				return "w";
 		}
@@ -519,7 +519,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 						heuristicScore--;
 			}
 		}
-		
+		System.out.println(heuristicScore);
 		return heuristicScore;
 	}
 	
