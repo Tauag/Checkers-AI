@@ -420,7 +420,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 	
 	/*
-	 * Basically its hasJumpMoves but returns immediately when a jump is availiable
+	 * Basically its hasJumpMoves but returns immediately when a jump is available
 	 * Marks a piece as "Active" if it has jumps
 	 */
 	public boolean isActive(int location, ThirtyFiveRepCheckerPiece piece){
