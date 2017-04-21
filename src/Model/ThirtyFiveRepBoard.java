@@ -524,7 +524,9 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		
 		return true;
 	}
+	
 	/***************************************************************   HEURISTICS FUNCTIONS  ****************************************************************/
+	
 	/*
 	 * (non-Javadoc)
 	 * Aggragates the total heuristic score
@@ -547,6 +549,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (mobheuristic(player) * WeightConstants._MOB);
 		if(ControllerConstants._POLE)
 			heuristicScore += (poleheuristic(player) * WeightConstants._POLE);
+		if(ControllerConstants._RELATIVECOUNT)
+			heuristicScore += (relativecountheuristic(player) * WeightConstants._RELATIVECOUNT);
 		
 		return heuristicScore;
 	}
@@ -730,6 +734,25 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(_set[i] != null)
 				if(_set[i].getColor().equals(player) && isPole(i, _set[i]))
 					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+
+	/*
+	 * The parameter is credited with one for each piece it has more than the opponent. It is debited for
+	 * each piece the opponent has more than the player.
+	 */
+	public int relativecountheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null){
+				if(_set[i].getColor().equals(player))
+					heuristicScore++;
+				else
+					heuristicScore--;
+			}
 		}
 		
 		return heuristicScore;
