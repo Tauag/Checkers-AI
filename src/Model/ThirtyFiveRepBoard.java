@@ -334,7 +334,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		else{
 			if(x.isKing())
-				return "w";
+				return "W";
 			else
 				return "w";
 		}
@@ -461,6 +461,69 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		return false;
 	}
 	
+	/*
+	 * Basically hasSingleMoves but returns true on first possible move, false otherwise
+	 */
+	public boolean canSingleMove(int location, ThirtyFiveRepCheckerPiece piece){
+		if(piece.getColor().equals("Black")){
+			if(isValid(location) && isValid(location + 4) && _set[location + 4] == null)
+				return true;
+			if(isValid(location) && isValid(location + 5) && _set[location + 5] == null)
+				return true;
+			if(piece.isKing()){
+				if(isValid(location) && isValid(location - 5) && _set[location - 5] == null)
+					return true;
+				if(isValid(location) && isValid(location - 4) && _set[location - 4] == null)
+					return true;
+			}
+		}
+		else{
+			if(isValid(location) && isValid(location - 5) && _set[location - 5] == null)
+				return true;
+			if(isValid(location) && isValid(location - 4) && _set[location - 4] == null)
+				return true;
+			if(piece.isKing()){
+				if(isValid(location) && isValid(location + 4) && _set[location + 4] == null)
+					return true;
+				if(isValid(location) && isValid(location + 5) && _set[location + 5] == null)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Checks if a piece is completely surrounded by empty spaces
+	 */
+	public boolean isPole(int location, ThirtyFiveRepCheckerPiece piece){
+		if(piece.getColor().equals("Black")){
+			if(!(isValid(location) && isValid(location + 4) && _set[location + 4] == null))
+				return false;
+			if(!(isValid(location) && isValid(location + 5) && _set[location + 5] == null))
+				return false;
+			if(piece.isKing()){
+				if(!(isValid(location) && isValid(location - 5) && _set[location - 5] == null))
+					return false;
+				if(!(isValid(location) && isValid(location - 4) && _set[location - 4] == null))
+					return false;
+			}
+		}
+		else{
+			if(!(isValid(location) && isValid(location - 5) && _set[location - 5] == null))
+				return false;
+			if(!(isValid(location) && isValid(location - 4) && _set[location - 4] == null))
+				return false;
+			if(piece.isKing()){
+				if(!(isValid(location) && isValid(location + 4) && _set[location + 4] == null))
+					return false;
+				if(!(isValid(location) && isValid(location + 5) && _set[location + 5] == null))
+					return false;
+			}
+		}
+		
+		return true;
+	}
 	/***************************************************************   HEURISTICS FUNCTIONS  ****************************************************************/
 	/*
 	 * (non-Javadoc)
@@ -478,6 +541,12 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (centheuristic(player) * WeightConstants._CENT);
 		if(ControllerConstants._CNTR)
 			heuristicScore += (cntrheuristic(player) * WeightConstants._CNTR);
+		if(ControllerConstants._KCENT)
+			heuristicScore += (kcentheuristic(player) * WeightConstants._KCENT);
+		if(ControllerConstants._MOB)
+			heuristicScore += (mobheuristic(player) * WeightConstants._MOB);
+		if(ControllerConstants._POLE)
+			heuristicScore += (poleheuristic(player) * WeightConstants._POLE);
 		
 		return heuristicScore;
 	}
@@ -628,6 +697,38 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		for(int pos : centerPositions){
 			if(_set[pos] != null)
 				if(_set[pos].getColor().equals(player) && _set[pos].isKing() && !(isActive(pos, _set[pos])))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+	
+	/*
+	 * The parameter is credited with 1 for each square to which the active side could 
+	 * move one or more pieces in the normal fashion, 
+	 * disregarding the fact that jump moves may or may not be available
+	 */
+	public int mobheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null)
+				if(_set[i].getColor().equals(player) && canSingleMove(i, _set[i]))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+
+	/*
+	 * The parameter is credited with 1 for each passive man that is completely surrounded by empty squares.
+	 */
+	public int poleheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i< 35; i++){
+			if(_set[i] != null)
+				if(_set[i].getColor().equals(player) && isPole(i, _set[i]))
 					heuristicScore++;
 		}
 		
