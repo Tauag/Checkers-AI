@@ -1,7 +1,11 @@
 package Test;
 
+import static org.junit.Assert.*;
+
 import java.util.Random;
 import java.util.Scanner;
+
+import org.junit.Test;
 
 import Controller.AlphaBeta;
 import Model.CheckersGameState;
@@ -12,7 +16,7 @@ import Model.ThirtyFiveRepCheckerPiece;
 public class HeuristicTester {
 	public static void main(String[] args) {
 		centerTest();
-		cntTest();
+		//cntTest();
 	}
 	
 	public static void centerTest() {
@@ -41,7 +45,8 @@ public class HeuristicTester {
 		state.centheuristic("White");
 	}
 	
-	public static void cntTest() {
+	@Test
+	public void cntTest() {
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 
 		set[10] = new ThirtyFiveRepCheckerPiece("White");
@@ -52,7 +57,7 @@ public class HeuristicTester {
 		set[14].turnKing();
 		set[15] = new ThirtyFiveRepCheckerPiece("White");
 		
-	//	set[19] = new ThirtyFiveRepCheckerPiece("Black");
+		set[19] = new ThirtyFiveRepCheckerPiece("Black");
 		set[20] = new ThirtyFiveRepCheckerPiece("White");
 		set[20].turnKing();
 		
@@ -68,5 +73,7 @@ public class HeuristicTester {
 		
 		System.out.print("Heuristic For White: ");
 		state.cntrheuristic("White");
+		
+		assertEquals(true, state.isActive(14, set[14]));
 	}
 }
