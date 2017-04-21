@@ -294,6 +294,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 	
 	public int utility(String player){
+		if(_winner.equals("Draw"))
+			return 0;
 		if(player.equals(_winner))
 			return Integer.MAX_VALUE;
 		else
@@ -340,6 +342,11 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	
 	@Override
 	public boolean isTerminal() {
+		if(actions().isEmpty()){
+			_winner = "Draw";
+			return true;
+		}
+		
 		String oneColor;
 		int i = 0;
 		while(_set[i] == null && i < 34)
@@ -608,5 +615,15 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		
 		return heuristicScore;
+	}
+	
+	/*
+	 * The parameter is credited with 2 if the passive side occupies the cramping square 
+	 * (13 for Black, and 20 for White) and at least one other nearby square 
+	 * (9 or 14 for Black, and 19 or 20 for White), while certain squares 
+	 * (17, 21, 22 and 25 for Black, and 8, 11, 12 and 16 for White) are all occupied by the active side
+	 */
+	public int crampheuristic(String player){
+		if(player.equals("Black"))
 	}
 }
