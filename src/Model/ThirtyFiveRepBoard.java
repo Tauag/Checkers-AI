@@ -324,10 +324,18 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	public String pieceToString(ThirtyFiveRepCheckerPiece x){
 		if(x == null)
 			return "-";
-		else if(x.getColor().equals("Black"))
-			return "b";
-		else
-			return "w";
+		else if(x.getColor().equals("Black")){
+			if(x.isKing())
+				return "B";
+			else
+				return "b";
+		}
+		else{
+			if(x.isKing())
+				return "w";
+			else
+				return "w";
+		}
 	}
 	
 	@Override
