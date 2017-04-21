@@ -1,9 +1,6 @@
 package Test;
 
-import java.util.Scanner;
 import Controller.AlphaBeta;
-import Model.CheckersGameState;
-import Model.Move;
 import Model.ThirtyFiveRepBoard;
 import Model.ThirtyFiveRepCheckerPiece;
 
@@ -12,51 +9,53 @@ public class AlphaBetaTests
 	public static void main(String[] args)
 	{
 		AlphaBetaTests obj = new AlphaBetaTests();
-		Scanner input = new Scanner(System.in);
-
-		System.out.println("Please note that error checks for bad user inputs are not implemented. Please follow the directions");
-		
-		int i = 0;
-		int curr;
-		while (i < 35)
-		{
-			curr = i;
-			while (i < curr + 4)
-			{
-				System.out.print("-" + Integer.toString(i));
-				i++;
-			}
-			
-			System.out.println();
-			
-			curr = i;
-			while (i < curr + 4)
-			{
-				System.out.print(Integer.toString(i) + "-");
-				i++;
-			}
-			
-			i++;
-			System.out.println();
-		}
-		
 		obj.apexTest();
+		obj.advTest();
 	}
 	
 	public void apexTest()
 	{
 		System.out.println("APEX TEST");
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
-		AlphaBeta tester = new AlphaBeta();
 
-		set[6] = new ThirtyFiveRepCheckerPiece("Black");
-		set[28] = new ThirtyFiveRepCheckerPiece("White");
+		// If they exist at the apex points
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
 		
-		CheckersGameState state = new ThirtyFiveRepBoard(set);
+		
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[6].toggleKing();
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
+//		set[28].toggleKing();
+		
+		// Active man at 6
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[11] = new ThirtyFiveRepCheckerPiece("White");
+//		set[10] = new ThirtyFiveRepCheckerPiece("White");
+		
+		// Active man at 28
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
+//		set[23] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[24] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
 		state.printState();
+				
+//		System.out.println(state.apexheuristic("Black"));
+		System.out.println(state.apexheuristic("White"));
 		
-		Move move = tester.alphabeta(state, 5);
-		System.out.println(move);
+	}
+	
+	public void advTest()
+	{
+		System.out.println("ADV TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		AlphaBeta tester = new AlphaBeta();
 		
+		
+		
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		state.printState();
 	}
 }
