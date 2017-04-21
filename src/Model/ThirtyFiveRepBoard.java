@@ -294,6 +294,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 	
 	public int utility(String player){
+		if(_winner.equals("Draw"))
+			return 0;
 		if(player.equals(_winner))
 			return Integer.MAX_VALUE;
 		else
@@ -340,6 +342,11 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	
 	@Override
 	public boolean isTerminal() {
+		if(actions().isEmpty()){
+			_winner = "Draw";
+			return true;
+		}
+		
 		String oneColor;
 		int i = 0;
 		while(_set[i] == null && i < 34)
