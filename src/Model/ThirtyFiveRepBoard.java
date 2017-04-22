@@ -20,12 +20,6 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		_winner = null;
 		_set = set;
 	}
-	
-	// Constructor used for testing hardcoded states for Apex heuristic currently
-	public ThirtyFiveRepBoard(ThirtyFiveRepCheckerPiece[] set){
-		_playerTurn = "Black";
-		_set = set;
-	}
 
 	@Override
 	public String player() {

@@ -8,4 +8,16 @@ public class Location {
 		_row = x;
 		_column = y;
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		return equals((Location) obj);
+	}
+	
+	public boolean equals(Location obj){
+		if(obj._row == this._row && obj._column == this._column)
+			return true;
+		else
+			return false;
+	}
 }
