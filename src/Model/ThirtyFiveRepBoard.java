@@ -611,23 +611,23 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	 * filled with passive pieces
 	 */
 	public int apexheuristic(String player){
-		boolean noKings = false, bothActive = false, neitherPassive = true;
+		boolean noKings = true, eitherActive = false, neitherPassive = true;
 		
 		if(_set[6] != null && _set[6].getColor().equals(player)){
-			bothActive |= isActive(6, _set[6]);
+			eitherActive |= isActive(6, _set[6]);
 			neitherPassive &= isActive(6, _set[6]);
 		}
 		if(_set[28] != null && _set[28].getColor().equals(player)){
-			bothActive |= isActive(28, _set[28]);
+			eitherActive |= isActive(28, _set[28]);
 			neitherPassive &= isActive(28, _set[28]);
 		}
 		for(ThirtyFiveRepCheckerPiece piece : _set){
 			if(piece != null)
 				if(piece.isKing())
-					noKings = true;
+					noKings = false;
 		}
 		
-		if(noKings && bothActive && !(neitherPassive))
+		if(noKings && eitherActive && neitherPassive)
 			return -1;
 		else
 			return 0;
@@ -650,14 +650,22 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		if(player.equals("Black")){
 			if(_set[0] != null)
 				bridgePassiveOccupation &= (_set[0].getColor().equals("Black") && !(isActive(0, _set[0])));
+			else
+				bridgePassiveOccupation &= false;
 			if(_set[2] != null)
 				bridgePassiveOccupation &= (_set[2].getColor().equals("Black") && !(isActive(2, _set[2])));
+			else
+				bridgePassiveOccupation &= false;
 		}
 		else{
 			if(_set[32] != null)
-				bridgePassiveOccupation &= (_set[32].getColor().equals("Black") && !(isActive(32, _set[32])));
-			if(_set[2] != null)
-				bridgePassiveOccupation &= (_set[34].getColor().equals("Black") && !(isActive(34, _set[34])));
+				bridgePassiveOccupation &= (_set[32].getColor().equals("White") && !(isActive(32, _set[32])));
+			else
+				bridgePassiveOccupation &= false;
+			if(_set[34] != null)
+				bridgePassiveOccupation &= (_set[34].getColor().equals("White") && !(isActive(34, _set[34])));
+			else
+				bridgePassiveOccupation &= false;
 		}
 		
 		if(noActiveKings && bridgePassiveOccupation)
