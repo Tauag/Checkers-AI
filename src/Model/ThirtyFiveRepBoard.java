@@ -382,36 +382,36 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	 * Returns a Location object
 	 */
 	public Location samuelToXY(int pos){
-		int augmented, row, col;
+		int base, row, col;
 		
 		if(pos < 8){
-			augmented = (7 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (7 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 6;
 			col = 7 - col;
 		}
 		else if(pos < 17){
-			augmented = (16 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (16 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 4;
 			col = 7 - col;
 		}
 		else if(pos < 26){
-			augmented = (25 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (25 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 2;
 			col = 7 - col;
 		}
 		else{
-			augmented = (34 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (34 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			col = 7 - col;
 		}
@@ -504,14 +504,12 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(isValid(location + 5))
 				if(!(_set[location + 5] == null))
 					return false;
-			if(piece.isKing()){
-				if(isValid(location - 5))
-					if(!(_set[location - 5] == null))
-						return false;
-				if(isValid(location - 4))
-					if(!(_set[location - 4] == null))
-						return false;
-			}
+			if(isValid(location - 5))
+				if(!(_set[location - 5] == null))
+					return false;
+			if(isValid(location - 4))
+				if(!(_set[location - 4] == null))
+					return false;
 		}
 		else{
 			if(isValid(location - 5))
@@ -520,14 +518,12 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(isValid(location - 4))
 				if(!(_set[location - 4] == null))
 					return false;
-			if(piece.isKing()){
-				if(isValid(location + 4))
-					if(!(_set[location + 4] == null))
-						return false;
-				if(isValid(location + 5))
-					if(!(_set[location + 5] == null))
-						return false;
-			}
+			if(isValid(location + 4))
+				if(!(_set[location + 4] == null))
+					return false;
+			if(isValid(location + 5))
+				if(!(_set[location + 5] == null))
+					return false;
 		}
 		
 		return true;
@@ -651,21 +647,21 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(_set[0] != null)
 				bridgePassiveOccupation &= (_set[0].getColor().equals("Black") && !(isActive(0, _set[0])));
 			else
-				bridgePassiveOccupation &= false;
+				bridgePassiveOccupation = false;
 			if(_set[2] != null)
 				bridgePassiveOccupation &= (_set[2].getColor().equals("Black") && !(isActive(2, _set[2])));
 			else
-				bridgePassiveOccupation &= false;
+				bridgePassiveOccupation = false;
 		}
 		else{
 			if(_set[32] != null)
 				bridgePassiveOccupation &= (_set[32].getColor().equals("White") && !(isActive(32, _set[32])));
 			else
-				bridgePassiveOccupation &= false;
+				bridgePassiveOccupation = false;
 			if(_set[34] != null)
 				bridgePassiveOccupation &= (_set[34].getColor().equals("White") && !(isActive(34, _set[34])));
 			else
-				bridgePassiveOccupation &= false;
+				bridgePassiveOccupation = false;
 		}
 		
 		if(noActiveKings && bridgePassiveOccupation)
