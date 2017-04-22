@@ -1,6 +1,7 @@
 package Controller;
 import Model.CheckersGameState;
 import Model.Move;
+import Model.ThirtyFiveRepBoard;
 
 public class AlphaBeta {
 	public Move alphabeta(CheckersGameState state, int maxDepth){
@@ -9,6 +10,7 @@ public class AlphaBeta {
 		int temp;
 		
 		for(Move a : state.actions()){
+			state.printState();
 			temp = minValue(state.result(a), maxDepth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, state.player());
 			if(temp > maxValue){
 				maxAction = a;
@@ -29,6 +31,7 @@ public class AlphaBeta {
 			int temp;
 			int beta_prime = beta;
 			for(Move move : state.actions()){
+				state.printState();
 				temp = maxValue(state.result(move), maxDepth - 1, alpha, beta_prime, player);
 				if(temp < value)
 					value = temp;
@@ -51,6 +54,7 @@ public class AlphaBeta {
 			int temp;
 			int alpha_prime = alpha;
 			for(Move move : state.actions()){
+				state.printState();
 				temp = minValue(state.result(move), maxDepth - 1, alpha_prime, beta, player);
 				if(temp > value)
 					value = temp;
@@ -61,5 +65,5 @@ public class AlphaBeta {
 			}
 			return value;
 		}
-	}
+	}	
 }
