@@ -16,7 +16,8 @@ import Model.ThirtyFiveRepCheckerPiece;
 public class HeuristicTester {
 	public static void main(String[] args) {
 		centerTest();
-		//cntTest();
+		cntTest();
+		backTest();
 	}
 	
 	public static void centerTest() {
@@ -45,8 +46,8 @@ public class HeuristicTester {
 		state.centheuristic("White");
 	}
 	
-	@Test
-	public void cntTest() {
+	
+	public static void cntTest() {
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 
 		set[10] = new ThirtyFiveRepCheckerPiece("White");
@@ -73,7 +74,36 @@ public class HeuristicTester {
 		
 		System.out.print("Heuristic For White: ");
 		state.cntrheuristic("White");
+	}
+	
+	public static void backTest() {
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		set[0] = new ThirtyFiveRepCheckerPiece("Black");
+		//set[0].turnKing();
+		set[1] = new ThirtyFiveRepCheckerPiece("Black");
+		set[2] = new ThirtyFiveRepCheckerPiece("Black");
+		set[3] = new ThirtyFiveRepCheckerPiece("Black");
+		set[5] = new ThirtyFiveRepCheckerPiece("White");
 		
-		assertEquals(true, state.isActive(14, set[14]));
+		set[19] = new ThirtyFiveRepCheckerPiece("White");
+		//set[19].turnKing();
+		set[11] = new ThirtyFiveRepCheckerPiece("Black");
+		set[15] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		set[31] = new ThirtyFiveRepCheckerPiece("White");
+		set[32] = new ThirtyFiveRepCheckerPiece("White");
+		set[32].turnKing();
+		set[33] = new ThirtyFiveRepCheckerPiece("White");
+		set[34] = new ThirtyFiveRepCheckerPiece("White");
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		System.out.println("Back Row Testing");
+		state.printState();
+		
+		System.out.print("Back heuristic for Black piece: ");
+		state.backheuristic("Black");
+		
+		System.out.print("Back heuristic for White piece: ");
+		state.backheuristic("White");
 	}
 }
