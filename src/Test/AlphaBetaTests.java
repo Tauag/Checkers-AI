@@ -9,7 +9,7 @@ public class AlphaBetaTests
 	public static void main(String[] args)
 	{
 		AlphaBetaTests obj = new AlphaBetaTests();
-		obj.apexTest();
+//		obj.apexTest();
 		obj.advTest();
 	}
 	
@@ -50,12 +50,17 @@ public class AlphaBetaTests
 	{
 		System.out.println("ADV TEST");
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
-		AlphaBeta tester = new AlphaBeta();
 		
+//		set[4-7] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[9-12] = new ThirtyFiveRepCheckerPiece("Black");
 		
+		set[4] = new ThirtyFiveRepCheckerPiece("White");
 		
 		
 		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
 		state.printState();
+		
+		System.out.println(state.advheuristic("White"));
+//		System.out.println(state.advheuristic("Black"));
 	}
 }
