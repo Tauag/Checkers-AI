@@ -20,12 +20,6 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		_winner = null;
 		_set = set;
 	}
-	
-	// Constructor used for testing hardcoded states for Apex heuristic currently
-	public ThirtyFiveRepBoard(ThirtyFiveRepCheckerPiece[] set){
-		_playerTurn = "Black";
-		_set = set;
-	}
 
 	@Override
 	public String player() {
@@ -388,36 +382,36 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	 * Returns a Location object
 	 */
 	public Location samuelToXY(int pos){
-		int augmented, row, col;
+		int base, row, col;
 		
 		if(pos < 8){
-			augmented = (7 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (7 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 6;
 			col = 7 - col;
 		}
 		else if(pos < 17){
-			augmented = (16 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (16 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 4;
 			col = 7 - col;
 		}
 		else if(pos < 26){
-			augmented = (25 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (25 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			row += 2;
 			col = 7 - col;
 		}
 		else{
-			augmented = (34 - pos) * 2;
-			row = augmented / 8;
-			col = augmented % 8;
+			base = (34 - pos) * 2;
+			row = base / 8;
+			col = base % 8;
 			if (row % 2 == 0) ++col;
 			col = 7 - col;
 		}
@@ -467,7 +461,76 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		return false;
 	}
 	
+	/*
+	 * Basically hasSingleMoves but returns true on first possible move, false otherwise
+	 */
+	public boolean canSingleMove(int location, ThirtyFiveRepCheckerPiece piece){
+		if(piece.getColor().equals("Black")){
+			if(isValid(location) && isValid(location + 4) && _set[location + 4] == null)
+				return true;
+			if(isValid(location) && isValid(location + 5) && _set[location + 5] == null)
+				return true;
+			if(piece.isKing()){
+				if(isValid(location) && isValid(location - 5) && _set[location - 5] == null)
+					return true;
+				if(isValid(location) && isValid(location - 4) && _set[location - 4] == null)
+					return true;
+			}
+		}
+		else{
+			if(isValid(location) && isValid(location - 5) && _set[location - 5] == null)
+				return true;
+			if(isValid(location) && isValid(location - 4) && _set[location - 4] == null)
+				return true;
+			if(piece.isKing()){
+				if(isValid(location) && isValid(location + 4) && _set[location + 4] == null)
+					return true;
+				if(isValid(location) && isValid(location + 5) && _set[location + 5] == null)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Checks if a piece is completely surrounded by empty spaces
+	 */
+	public boolean isPole(int location, ThirtyFiveRepCheckerPiece piece){
+		if(piece.getColor().equals("Black")){
+			if(isValid(location + 4))
+				if(!(_set[location + 4] == null))
+					return false;
+			if(isValid(location + 5))
+				if(!(_set[location + 5] == null))
+					return false;
+			if(isValid(location - 5))
+				if(!(_set[location - 5] == null))
+					return false;
+			if(isValid(location - 4))
+				if(!(_set[location - 4] == null))
+					return false;
+		}
+		else{
+			if(isValid(location - 5))
+				if(!(_set[location - 5] == null))
+					return false;
+			if(isValid(location - 4))
+				if(!(_set[location - 4] == null))
+					return false;
+			if(isValid(location + 4))
+				if(!(_set[location + 4] == null))
+					return false;
+			if(isValid(location + 5))
+				if(!(_set[location + 5] == null))
+					return false;
+		}
+		
+		return true;
+	}
+	
 	/***************************************************************   HEURISTICS FUNCTIONS  ****************************************************************/
+	
 	/*
 	 * (non-Javadoc)
 	 * Aggragates the total heuristic score
@@ -476,6 +539,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	public int analyze(String player){
 		int heuristicScore = 0;
 		
+		if(ControllerConstants._ADV)
+			heuristicScore += (advheuristic(player) * WeightConstants._ADV);
 		if(ControllerConstants._APEX)
 			heuristicScore += (apexheuristic(player) * WeightConstants._APEX);
 		if(ControllerConstants._BACK)
@@ -484,6 +549,14 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (centheuristic(player) * WeightConstants._CENT);
 		if(ControllerConstants._CNTR)
 			heuristicScore += (cntrheuristic(player) * WeightConstants._CNTR);
+		if(ControllerConstants._KCENT)
+			heuristicScore += (kcentheuristic(player) * WeightConstants._KCENT);
+		if(ControllerConstants._MOB)
+			heuristicScore += (mobheuristic(player) * WeightConstants._MOB);
+		if(ControllerConstants._POLE)
+			heuristicScore += (poleheuristic(player) * WeightConstants._POLE);
+		if(ControllerConstants._RELATIVECOUNT)
+			heuristicScore += (relativecountheuristic(player) * WeightConstants._RELATIVECOUNT);
 		
 		return heuristicScore;
 	}
@@ -534,23 +607,23 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	 * filled with passive pieces
 	 */
 	public int apexheuristic(String player){
-		boolean noKings = false, bothActive = false, neitherPassive = true;
+		boolean noKings = true, eitherActive = false, neitherPassive = true;
 		
 		if(_set[6] != null && _set[6].getColor().equals(player)){
-			bothActive |= isActive(6, _set[6]);
+			eitherActive |= isActive(6, _set[6]);
 			neitherPassive &= isActive(6, _set[6]);
 		}
 		if(_set[28] != null && _set[28].getColor().equals(player)){
-			bothActive |= isActive(28, _set[28]);
+			eitherActive |= isActive(28, _set[28]);
 			neitherPassive &= isActive(28, _set[28]);
 		}
 		for(ThirtyFiveRepCheckerPiece piece : _set){
 			if(piece != null)
 				if(piece.isKing())
-					noKings = true;
+					noKings = false;
 		}
 		
-		if(noKings && bothActive && !(neitherPassive))
+		if(noKings && eitherActive && neitherPassive)
 			return -1;
 		else
 			return 0;
@@ -573,14 +646,22 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		if(player.equals("Black")){
 			if(_set[0] != null)
 				bridgePassiveOccupation &= (_set[0].getColor().equals("Black") && !(isActive(0, _set[0])));
+			else
+				bridgePassiveOccupation = false;
 			if(_set[2] != null)
 				bridgePassiveOccupation &= (_set[2].getColor().equals("Black") && !(isActive(2, _set[2])));
+			else
+				bridgePassiveOccupation = false;
 		}
 		else{
 			if(_set[32] != null)
-				bridgePassiveOccupation &= (_set[32].getColor().equals("Black") && !(isActive(32, _set[32])));
-			if(_set[2] != null)
-				bridgePassiveOccupation &= (_set[34].getColor().equals("Black") && !(isActive(34, _set[34])));
+				bridgePassiveOccupation &= (_set[32].getColor().equals("White") && !(isActive(32, _set[32])));
+			else
+				bridgePassiveOccupation = false;
+			if(_set[34] != null)
+				bridgePassiveOccupation &= (_set[34].getColor().equals("White") && !(isActive(34, _set[34])));
+			else
+				bridgePassiveOccupation = false;
 		}
 		
 		if(noActiveKings && bridgePassiveOccupation)
@@ -635,6 +716,57 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			if(_set[pos] != null)
 				if(_set[pos].getColor().equals(player) && _set[pos].isKing() && !(isActive(pos, _set[pos])))
 					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+	
+	/*
+	 * The parameter is credited with 1 for each square to which the active side could 
+	 * move one or more pieces in the normal fashion, 
+	 * disregarding the fact that jump moves may or may not be available
+	 */
+	public int mobheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null)
+				if(_set[i].getColor().equals(player) && canSingleMove(i, _set[i]))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+
+	/*
+	 * The parameter is credited with 1 for each passive man that is completely surrounded by empty squares.
+	 */
+	public int poleheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i< 35; i++){
+			if(_set[i] != null)
+				if(_set[i].getColor().equals(player) && isPole(i, _set[i]))
+					heuristicScore++;
+		}
+		
+		return heuristicScore;
+	}
+
+	/*
+	 * The parameter is credited with one for each piece it has more than the opponent. It is debited for
+	 * each piece the opponent has more than the player.
+	 */
+	public int relativecountheuristic(String player){
+		int heuristicScore = 0;
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null){
+				if(_set[i].getColor().equals(player))
+					heuristicScore++;
+				else
+					heuristicScore--;
+			}
 		}
 		
 		return heuristicScore;
