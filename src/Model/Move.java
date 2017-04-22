@@ -12,6 +12,24 @@ public class Move{
 		old_coordinate = oldinput;
 		_kills = new LinkedList<Integer>();
 	}
+	public Move(int oldcoord, int newcoord, int kill)
+	{
+		old_coordinate = oldcoord;
+		new_coordinate = newcoord;
+		_kills = new LinkedList<Integer>();
+		this.addToKills(kill);
+	}
+	
+	public Move(int oldinput, int newcoord, List<Integer> moves){
+		old_coordinate = oldinput;
+		new_coordinate = newcoord;
+		_kills = moves;
+	}
+	
+	public int getnewcoordinate()
+	{
+		return new_coordinate;
+	}
 	
 	public Move(int oldinput, List<Integer> moves){
 		old_coordinate = oldinput;

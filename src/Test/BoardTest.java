@@ -7,6 +7,17 @@ import Model.ThirtyFiveRepCheckerPiece;
 public class BoardTest {
 	
 	@Test
+	public void double_jump(){
+		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
+		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[5] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[25] = new ThirtyFiveRepCheckerPiece("White");
+		ThirtyFiveRepBoard board = new ThirtyFiveRepBoard("White", pieces);
+	}
+	
 	public void test_isActive(){
 		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
 		pieces[31] = new ThirtyFiveRepCheckerPiece("White");
