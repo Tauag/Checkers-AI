@@ -1,50 +1,66 @@
 package Test;
 
-
-import java.util.Random;
-import java.util.Scanner;
 import Controller.AlphaBeta;
-import Model.CheckersGameState;
-import Model.Move;
 import Model.ThirtyFiveRepBoard;
+import Model.ThirtyFiveRepCheckerPiece;
 
 public class AlphaBetaTests
 {
 	public static void main(String[] args)
 	{
-		CheckersGameState cb = new ThirtyFiveRepBoard();
-		AlphaBeta test= new AlphaBeta();
-		Scanner input = new Scanner(System.in);
-
-		System.out.println("Please note that error checks for bad user inputs are not implemented. Please follow the directions");
-		
-		int i = 0;
-		int curr;
-		while (i < 35)
-		{
-			curr = i;
-			while (i < curr + 4)
-			{
-				System.out.print("-" + Integer.toString(i));
-				i++;
-			}
-			
-			System.out.println();
-			
-			curr = i;
-			while (i < curr + 4)
-			{
-				System.out.print(Integer.toString(i) + "-");
-				i++;
-			}
-			
-			i++;
-			System.out.println();
-		}
-		System.out.println("****************************************************************");
-		cb.printState();
-		Move move = test.alphabeta(cb, 5);
-		System.out.println(move);
-		
-		}
+		AlphaBetaTests obj = new AlphaBetaTests();
+//		obj.apexTest();
+		obj.advTest();
 	}
+	
+	public void apexTest()
+	{
+		System.out.println("APEX TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+
+		// If they exist at the apex points
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
+		
+		
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[6].toggleKing();
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
+//		set[28].toggleKing();
+		
+		// Active man at 6
+//		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[11] = new ThirtyFiveRepCheckerPiece("White");
+//		set[10] = new ThirtyFiveRepCheckerPiece("White");
+		
+		// Active man at 28
+//		set[28] = new ThirtyFiveRepCheckerPiece("White");
+//		set[23] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[24] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		state.printState();
+				
+//		System.out.println(state.apexheuristic("Black"));
+		System.out.println(state.apexheuristic("White"));
+		
+	}
+	
+	public void advTest()
+	{
+		System.out.println("ADV TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		
+//		set[4-7] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[9-12] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		set[4] = new ThirtyFiveRepCheckerPiece("White");
+		
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		state.printState();
+		
+		System.out.println(state.advheuristic("White"));
+//		System.out.println(state.advheuristic("Black"));
+	}
+}
