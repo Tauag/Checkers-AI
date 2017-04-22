@@ -38,7 +38,7 @@ public class AlphaBetaTests
 //		set[23] = new ThirtyFiveRepCheckerPiece("Black");
 //		set[24] = new ThirtyFiveRepCheckerPiece("Black");
 		
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		state.printState();
 				
 //		System.out.println(state.apexheuristic("Black"));
@@ -57,7 +57,7 @@ public class AlphaBetaTests
 		set[4] = new ThirtyFiveRepCheckerPiece("White");
 		
 		
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		state.printState();
 		
 		System.out.println(state.advheuristic("White"));

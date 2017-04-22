@@ -35,7 +35,7 @@ public class HeuristicTester {
 		set[23] = new ThirtyFiveRepCheckerPiece("Black");
 		set[24] = new ThirtyFiveRepCheckerPiece("White");
 		
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		System.out.println("Center heuristic test for passive man");
 		state.printState();
 		
@@ -65,7 +65,7 @@ public class HeuristicTester {
 	//	set[23] = new ThirtyFiveRepCheckerPiece("Black");
 		set[24] = new ThirtyFiveRepCheckerPiece("Black");
 		
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		System.out.println("Center heuristic test for active man");
 		state.printState();
 		
@@ -96,7 +96,7 @@ public class HeuristicTester {
 		set[33] = new ThirtyFiveRepCheckerPiece("White");
 		set[34] = new ThirtyFiveRepCheckerPiece("White");
 		
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard(set);
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		System.out.println("Back Row Testing");
 		state.printState();
 		
