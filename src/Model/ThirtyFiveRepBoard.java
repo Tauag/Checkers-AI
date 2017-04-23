@@ -197,7 +197,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 				for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originalLocation))
 					if(!killedalready(mv, move))
 					{
-						move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
+						move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
 						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), new LinkedList<Integer>(move._kills)), originalLocation));
 					}
 				}
@@ -208,7 +208,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing, originalLocation))
 				if(!killedalready(mv, move))
 				{
-					move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
+					move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
 					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)), originalLocation));
 				}		
 		}
