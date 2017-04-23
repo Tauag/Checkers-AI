@@ -233,8 +233,11 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			_set[x.old_coordinate].turnKing();
 		
 		ThirtyFiveRepCheckerPiece[] newset = _set.clone();
+		if(x.new_coordinate != x.old_coordinate)
+		{
 		newset[x.new_coordinate] = newset[x.old_coordinate];
 		newset[x.old_coordinate] = null;
+		}
 		for(int i : x._kills)
 			newset[i] = null;
 		

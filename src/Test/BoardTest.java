@@ -1,21 +1,133 @@
 package Test;
 import static org.junit.Assert.assertEquals;
+
+import java.util.Scanner;
+
 import org.junit.Test;
+
+import Model.CheckersGameState;
 import Model.ThirtyFiveRepBoard;
 import Model.ThirtyFiveRepCheckerPiece;
 
 public class BoardTest {
 	
+	
 	@Test
-	public void double_jump(){
+	public void double_jump_white(){
 		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
+		//pieces[2] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[6] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[20] = new ThirtyFiveRepCheckerPiece("White");
+		CheckersGameState cb = new ThirtyFiveRepBoard("White", pieces);		
+		Scanner input = new Scanner(System.in);
+		int choice, sz;
+		System.out.println("**********************************");
+			cb.printState();
+			while(!cb.isTerminal()){
+				System.out.println("Choose an available actions: (You only need to input the number)");
+				System.out.println(cb.player() + " turn");
+				if(!cb.actions().isEmpty()){
+					sz = cb.actions().size();
+					for(int j = 0; j < sz; j++){
+						System.out.print(Integer.toString(j) + ": ");
+						System.out.println(cb.actions().get(j));
+					}
+					choice = input.nextInt();
+					cb = cb.result(cb.actions().get(choice));
+					System.out.println("**********************************");
+				}
+				cb.printState();
+			}
+	}
+	
+	@Test
+	public void double_jump_black(){
+		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
+		//pieces[23] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[28] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
+		CheckersGameState cb = new ThirtyFiveRepBoard("Black", pieces);		
+		Scanner input = new Scanner(System.in);
+		int choice, sz;
+		System.out.println("**********************************");
+			cb.printState();
+			while(!cb.isTerminal()){
+				System.out.println("Choose an available actions: (You only need to input the number)");
+				System.out.println(cb.player() + " turn");
+				if(!cb.actions().isEmpty()){
+					sz = cb.actions().size();
+					for(int j = 0; j < sz; j++){
+						System.out.print(Integer.toString(j) + ": ");
+						System.out.println(cb.actions().get(j));
+					}
+					choice = input.nextInt();
+					cb = cb.result(cb.actions().get(choice));
+					System.out.println("**********************************");
+				}
+				cb.printState();
+			}
+	}
+	
+	@Test
+	public void cyclic_jump_white(){
+		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
+		pieces[6] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[7] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[16] = new ThirtyFiveRepCheckerPiece("Black");
+		pieces[20] = new ThirtyFiveRepCheckerPiece("White");
+		CheckersGameState cb = new ThirtyFiveRepBoard("White", pieces);		
+		Scanner input = new Scanner(System.in);
+		int choice, sz;
+		System.out.println("**********************************");
+			cb.printState();
+			while(!cb.isTerminal()){
+				System.out.println("Choose an available actions: (You only need to input the number)");
+				System.out.println(cb.player() + " turn");
+				if(!cb.actions().isEmpty()){
+					sz = cb.actions().size();
+					for(int j = 0; j < sz; j++){
+						System.out.print(Integer.toString(j) + ": ");
+						System.out.println(cb.actions().get(j));
+					}
+					choice = input.nextInt();
+					cb = cb.result(cb.actions().get(choice));
+					System.out.println("**********************************");
+				}
+				cb.printState();
+			}
+	}
+	
+	@Test
+	public void cyclic_jump_black(){
+		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
+		pieces[20] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
-		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
-		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
-		pieces[5] = new ThirtyFiveRepCheckerPiece("Black");
-		pieces[25] = new ThirtyFiveRepCheckerPiece("White");
-		ThirtyFiveRepBoard board = new ThirtyFiveRepBoard("White", pieces);
+		pieces[28] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[29] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
+		CheckersGameState cb = new ThirtyFiveRepBoard("Black", pieces);		
+		Scanner input = new Scanner(System.in);
+		int choice, sz;
+		System.out.println("**********************************");
+			cb.printState();
+			while(!cb.isTerminal()){
+				System.out.println("Choose an available actions: (You only need to input the number)");
+				System.out.println(cb.player() + " turn");
+				if(!cb.actions().isEmpty()){
+					sz = cb.actions().size();
+					for(int j = 0; j < sz; j++){
+						System.out.print(Integer.toString(j) + ": ");
+						System.out.println(cb.actions().get(j));
+					}
+					choice = input.nextInt();
+					cb = cb.result(cb.actions().get(choice));
+					System.out.println("**********************************");
+				}
+				cb.printState();
+			}
 	}
 	
 	public void test_isActive(){
