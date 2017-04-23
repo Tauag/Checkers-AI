@@ -19,7 +19,7 @@ public class ThirtyFiveRevisedTester {
 		pieces[30] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[21] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
-		CheckersGameState cb = new ThirtyFiveRepBoardRevised("Black", pieces);
+		CheckersGameState cb = new ThirtyFiveRepBoard("Black", pieces);
 		
 		Scanner input = new Scanner(System.in);
 		int choice, sz;

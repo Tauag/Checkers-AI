@@ -34,8 +34,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		
 		for(int i = 0; i < 35; i++){
 			if(_set[i] != null && _set[i].getColor().equals(_playerTurn) && isValid(i)){
-				for(String mv : hasJumpMoves(i, _set[i], _set[i].isKing())){
-					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv, new Move(i));
+				for(Move mv : hasJumpMoves(i, _set[i], _set[i].isKing(),i)){ //for all possible jump moves of each piece
+					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv,i); //temp is a list of possible jump moves
 					allJumpActions.addAll(temp);
 				}
 				if(allJumpActions.size() == 0){
@@ -53,39 +53,39 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	/*
 	 * Compiles a list of possible jump moves for a given piece
 	 */
-	public List<String> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged){
-		List<String> possibleMoves = new LinkedList<String>();
+	public List<Move> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged, int originallocation){
+		List<Move> possibleMoves = new LinkedList<Move>();
 		if(piece.getColor().equals("Black")){
-			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 8] == null)
+			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || ((location + 8) == originallocation)))
 					if(_set[location + 4].getColor().equals("White"))
-						possibleMoves.add("JL");
-			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 10] == null)
+						possibleMoves.add(new Move(location, (location + 8), (location + 4)));
+			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || ((location + 10) == originallocation)))
 					if(_set[location + 5].getColor().equals("White"))
-						possibleMoves.add("JR");
+						possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			if(kinged){
-				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 10] == null)
+				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || ((location - 10) == originallocation)))
 						if(_set[location - 5].getColor().equals("White"))
-							possibleMoves.add("JBL");
-				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 8] == null)
+							possibleMoves.add(new Move(location, (location - 10), (location - 5)));
+				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || ((location - 8) == originallocation)))
 						if(_set[location - 4].getColor().equals("White"))
-							possibleMoves.add("JBR");
+							possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			}
 		}
 		
 		if(piece.getColor().equals("White")){
-			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 10] == null)
+			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || ((location - 10) == originallocation)))
 					if(_set[location - 5].getColor().equals("Black"))
-						possibleMoves.add("JL");
-			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 8] == null)
+						possibleMoves.add(new Move(location, (location - 10), (location - 5)));
+			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || ((location - 8) == originallocation)))
 					if(_set[location - 4].getColor().equals("Black"))
-						possibleMoves.add("JR");
+						possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			if(kinged){
-				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 8] == null)
+				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || ((location + 8) == originallocation)))
 						if(_set[location + 4].getColor().equals("Black"))
-							possibleMoves.add("JBL");
-				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 10] == null)
+							possibleMoves.add(new Move(location, (location + 8), (location + 4)));
+				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || ((location + 10) == originallocation)))
 						if(_set[location + 5].getColor().equals("Black"))
-							possibleMoves.add("JBR");
+							possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			}
 		}
 		return possibleMoves;
@@ -171,88 +171,42 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		return move;
 	}
 	
+	public boolean killedalready(Move newestmove, Move previousmove)
+	{
+		if(!previousmove._kills.containsAll(newestmove._kills))
+		{
+				return false;
+		}
+		return true;
+	}
+	
 	/*
 	 * Fills up a given Move object with jump commands
 	 */
-	public List<Move> fillJumpMove(int location, ThirtyFiveRepCheckerPiece target, boolean kinged, String command, Move move){
+	public List<Move> fillJumpMove(int location, ThirtyFiveRepCheckerPiece target, boolean kinged, Move move, int originallocation){
 		List<Move> retlist = new LinkedList<Move>();
-		int nextLocation = location;
+		int nextLocation = move.getnewcoordinate();
 		boolean isKing = kinged;
 		if(target.getColor().equals("Black")){
-			if(command.equals("JL")){
-				nextLocation = location + 8;
-				move.addToKills(location + 4);
-				if(nextLocation > 30)
+				if(move.getnewcoordinate() > 30)
 					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JBR"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JR")){
-				nextLocation = location + 10;
-				move.addToKills(location + 5);
-				if(nextLocation > 30)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JBL"))
-					retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JBL") && kinged){
-				nextLocation = location - 10;
-				move.addToKills(location - 5);
-				if(nextLocation > 30)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JR"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JBR") && kinged){
-				nextLocation = location - 8;
-				move.addToKills(location - 4);
-				if(nextLocation > 30)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JL"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-		}
-		else{
-			if(command.equals("JL")){
-				nextLocation = location - 10;
-				move.addToKills(location - 5);
-				if(nextLocation < 4)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JBR"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JR")){
-				nextLocation = location - 8;
-				move.addToKills(location - 4);
-				if(nextLocation < 4)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JBL"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JBL") && kinged){
-				nextLocation = location + 8;
-				move.addToKills(location + 4);
-				if(nextLocation < 4)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JR"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
-			else if(command.equals("JBR") && kinged){
-				nextLocation = location + 10;
-				move.addToKills(location + 5);
-				if(nextLocation < 4)
-					isKing = true;
-				for(String mv : hasJumpMoves(nextLocation, target, isKing))
-					if(!mv.equals("JL"))
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, mv, new Move(move.old_coordinate, new LinkedList<Integer>(move._kills))));
-			}
+				for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originallocation))
+					if(!killedalready(mv, move))
+					{
+						move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
+						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)),originallocation));
+					}
+				}
+		else
+		{
+			if(move.getnewcoordinate() < 4)
+				isKing = true;
+			for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originallocation))
+				if(!killedalready(mv, move))
+				{
+					move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
+					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)),originallocation));
+				}		
 		}
 		if(retlist.size() == 0){
 			move.new_coordinate = nextLocation;
