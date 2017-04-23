@@ -26,14 +26,14 @@ public class Move{
 		_kills = moves;
 	}
 	
-	public int getnewcoordinate()
-	{
-		return new_coordinate;
-	}
-	
 	public Move(int oldinput, List<Integer> moves){
 		old_coordinate = oldinput;
 		_kills = moves;
+	}
+	
+	public int getnewcoordinate()
+	{
+		return new_coordinate;
 	}
 	
 	public void addToKills(int kill){
