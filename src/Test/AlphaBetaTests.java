@@ -12,7 +12,8 @@ public class AlphaBetaTests
 //		obj.advTest();
 //		obj.kcentTest();
 //		obj.mobTest();
-		obj.poleTest();
+//		obj.poleTest();
+		obj.relTest();
 	}
 	
 	public void apexTest()
@@ -175,33 +176,31 @@ public class AlphaBetaTests
 		set[14] = new ThirtyFiveRepCheckerPiece("Black");		
 		
 		
-		
 		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
 		state.printState();
 		
 		System.out.println("White score: " + state.mobheuristic("White"));
 		System.out.println("Black score: " + state.mobheuristic("Black"));
-
 	}
 	
 	
 	public void poleTest()
 	{
-		System.out.println("MOB TEST");
+		System.out.println("POLE TEST");
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 
-//		set[0] = new ThirtyFiveRepCheckerPiece("Black");
+		set[0] = new ThirtyFiveRepCheckerPiece("Black");
 		set[5] = new ThirtyFiveRepCheckerPiece("Black");
 		set[5].turnKing();
 		set[6] = new ThirtyFiveRepCheckerPiece("Black");
-//		set[9] = new ThirtyFiveRepCheckerPiece("Black");
-//		set[10] = new ThirtyFiveRepCheckerPiece("Black");
+		set[9] = new ThirtyFiveRepCheckerPiece("Black");
+		set[10] = new ThirtyFiveRepCheckerPiece("Black");
 		
 		set[28] = new ThirtyFiveRepCheckerPiece("White");
 		set[29] = new ThirtyFiveRepCheckerPiece("White");
 		set[23] = new ThirtyFiveRepCheckerPiece("White");
-//		set[9] = new ThirtyFiveRepCheckerPiece("White");
-//		set[10] = new ThirtyFiveRepCheckerPiece("White");
+		set[31] = new ThirtyFiveRepCheckerPiece("White");
+		set[30] = new ThirtyFiveRepCheckerPiece("White");
 
 
 		
@@ -210,6 +209,34 @@ public class AlphaBetaTests
 		
 		System.out.println("White score: " + state.poleheuristic("White"));
 		System.out.println("Black score: " + state.poleheuristic("Black"));
+	}
+	
+	
+	public void relTest()
+	{
+		System.out.println("REL TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+
+		set[0] = new ThirtyFiveRepCheckerPiece("Black");
+		set[5] = new ThirtyFiveRepCheckerPiece("Black");
+		set[5].turnKing();
+		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+		set[9] = new ThirtyFiveRepCheckerPiece("Black");
+//		set[10] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		set[28] = new ThirtyFiveRepCheckerPiece("White");
+		set[29] = new ThirtyFiveRepCheckerPiece("White");
+//		set[23] = new ThirtyFiveRepCheckerPiece("White");
+//		set[30] = new ThirtyFiveRepCheckerPiece("White");
+//		set[31] = new ThirtyFiveRepCheckerPiece("White");
+		
+		
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard("Black", set);
+		state.printState();
+		
+		System.out.println("White score: " + state.relativecountheuristic("White"));
+		System.out.println("Black score: " + state.relativecountheuristic("Black"));
 
 	}
+	
 }
