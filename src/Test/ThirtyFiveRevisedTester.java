@@ -11,13 +11,16 @@ public class ThirtyFiveRevisedTester {
 	public static void main(String[] args){
 		
 		//CheckersGameState cb = new ThirtyFiveRepBoardRevised();
+		
 		ThirtyFiveRepCheckerPiece[] pieces = new ThirtyFiveRepCheckerPiece[35];
-		pieces[19] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[12] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[20] = new ThirtyFiveRepCheckerPiece("White");
-		pieces[28] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[29] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[30] = new ThirtyFiveRepCheckerPiece("White");
+		pieces[21] = new ThirtyFiveRepCheckerPiece("White");
 		pieces[15] = new ThirtyFiveRepCheckerPiece("Black");
 		CheckersGameState cb = new ThirtyFiveRepBoardRevised("Black", pieces);
+		
 		Scanner input = new Scanner(System.in);
 		int choice, sz;
 		
