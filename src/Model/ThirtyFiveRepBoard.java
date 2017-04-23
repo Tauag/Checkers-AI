@@ -34,8 +34,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		
 		for(int i = 0; i < 35; i++){
 			if(_set[i] != null && _set[i].getColor().equals(_playerTurn) && isValid(i)){
-				for(Move mv : hasJumpMoves(i, _set[i], _set[i].isKing(),i)){ //for all possible jump moves of each piece
-					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv,i); //temp is a list of possible jump moves
+				for(Move mv : hasJumpMoves(i, _set[i], _set[i].isKing(), i)){ //for all possible jump moves of each piece
+					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv, i); //temp is a list of possible jump moves
 					allJumpActions.addAll(temp);
 				}
 				if(allJumpActions.size() == 0){
@@ -53,38 +53,42 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	/*
 	 * Compiles a list of possible jump moves for a given piece
 	 */
-	public List<Move> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged, int originallocation){
+	public List<Move> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged, int originalLocation){
 		List<Move> possibleMoves = new LinkedList<Move>();
 		if(piece.getColor().equals("Black")){
-			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || ((location + 8) == originallocation)))
-					if(_set[location + 4].getColor().equals("White"))
+			//The logic works like this:
+			//First check if the current piece's location and its destination location is valid
+			//Second check that the space it is jumping over is filled and it is a piece of the opposing team
+			//Finally check that its destination is empty and therefore allows a jump to occur OR if the destination is the same and the jump is cyclical
+			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 4].getColor().equals("White"))
+					if(_set[location + 8] == null || ((location + 8) == originalLocation))
 						possibleMoves.add(new Move(location, (location + 8), (location + 4)));
-			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || ((location + 10) == originallocation)))
-					if(_set[location + 5].getColor().equals("White"))
+			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 5].getColor().equals("White"))
+					if(_set[location + 10] == null || ((location + 10) == originalLocation))
 						possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			if(kinged){
-				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || ((location - 10) == originallocation)))
-						if(_set[location - 5].getColor().equals("White"))
+				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 5].getColor().equals("White"))
+						if(_set[location - 10] == null || ((location - 10) == originalLocation))
 							possibleMoves.add(new Move(location, (location - 10), (location - 5)));
-				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || ((location - 8) == originallocation)))
-						if(_set[location - 4].getColor().equals("White"))
+				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 4].getColor().equals("White"))
+						if(_set[location - 8] == null || ((location - 8) == originalLocation))
 							possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			}
 		}
 		
 		if(piece.getColor().equals("White")){
-			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && (_set[location - 10] == null || ((location - 10) == originallocation)))
-					if(_set[location - 5].getColor().equals("Black"))
+			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 5].getColor().equals("Black"))
+					if(_set[location - 10] == null || ((location - 10) == originalLocation))
 						possibleMoves.add(new Move(location, (location - 10), (location - 5)));
-			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && (_set[location - 8] == null || ((location - 8) == originallocation)))
-					if(_set[location - 4].getColor().equals("Black"))
+			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 4].getColor().equals("Black"))
+					if(_set[location - 8] == null || ((location - 8) == originalLocation))
 						possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			if(kinged){
-				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && (_set[location + 8] == null || ((location + 8) == originallocation)))
-						if(_set[location + 4].getColor().equals("Black"))
+				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 4].getColor().equals("Black"))
+						if(_set[location + 8] == null || ((location + 8) == originalLocation))
 							possibleMoves.add(new Move(location, (location + 8), (location + 4)));
-				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && (_set[location + 10] == null || ((location + 10) == originallocation)))
-						if(_set[location + 5].getColor().equals("Black"))
+				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 5].getColor().equals("Black"))
+						if(_set[location + 10] == null || ((location + 10) == originalLocation))
 							possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			}
 		}
@@ -183,29 +187,31 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	/*
 	 * Fills up a given Move object with jump commands
 	 */
-	public List<Move> fillJumpMove(int location, ThirtyFiveRepCheckerPiece target, boolean kinged, Move move, int originallocation){
+	public List<Move> fillJumpMove(int location, ThirtyFiveRepCheckerPiece target, boolean kinged, Move move, int originalLocation){
 		List<Move> retlist = new LinkedList<Move>();
 		int nextLocation = move.getnewcoordinate();
 		boolean isKing = kinged;
 		if(target.getColor().equals("Black")){
 				if(move.getnewcoordinate() > 30)
 					isKing = true;
-				for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originallocation))
+				for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originalLocation))
 					if(!killedalready(mv, move))
 					{
-						move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)),originallocation));
+						move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
+						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), 
+								new LinkedList<Integer>(move._kills)), originalLocation));
 					}
 				}
 		else
 		{
 			if(move.getnewcoordinate() < 4)
 				isKing = true;
-			for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing,originallocation))
+			for(Move mv : hasJumpMoves(move.getnewcoordinate(), target, isKing, originalLocation))
 				if(!killedalready(mv, move))
 				{
-					move._kills.add((mv.new_coordinate + mv.old_coordinate)/2);
-					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)),originallocation));
+					move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
+					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), 
+							new LinkedList<Integer>(move._kills)), originalLocation));
 				}		
 		}
 		if(retlist.size() == 0){
@@ -235,8 +241,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		ThirtyFiveRepCheckerPiece[] newset = _set.clone();
 		if(x.new_coordinate != x.old_coordinate)
 		{
-		newset[x.new_coordinate] = newset[x.old_coordinate];
-		newset[x.old_coordinate] = null;
+			newset[x.new_coordinate] = newset[x.old_coordinate];
+			newset[x.old_coordinate] = null;
 		}
 		for(int i : x._kills)
 			newset[i] = null;
