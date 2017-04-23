@@ -34,8 +34,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		
 		for(int i = 0; i < 35; i++){
 			if(_set[i] != null && _set[i].getColor().equals(_playerTurn) && isValid(i)){
-				for(Move mv : hasJumpMoves(i, _set[i], _set[i].isKing(),i)){ //for all possible jump moves of each piece
-					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv,i); //temp is a list of possible jump moves
+				for(Move mv : hasJumpMoves(i, _set[i], _set[i].isKing(), i)){ //for all possible jump moves of each piece
+					temp = fillJumpMove(i, _set[i], _set[i].isKing(), mv, i); //temp is a list of possible jump moves
 					allJumpActions.addAll(temp);
 				}
 				if(allJumpActions.size() == 0){
@@ -198,7 +198,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 					if(!killedalready(mv, move))
 					{
 						move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
-						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), new LinkedList<Integer>(move._kills)), originalLocation));
+						retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), 
+								new LinkedList<Integer>(move._kills)), originalLocation));
 					}
 				}
 		else
@@ -209,7 +210,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 				if(!killedalready(mv, move))
 				{
 					move._kills.add((mv.new_coordinate + mv.old_coordinate) / 2);
-					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(),new LinkedList<Integer>(move._kills)), originalLocation));
+					retlist.addAll(fillJumpMove(nextLocation, target, isKing, new Move(move.old_coordinate, mv.getnewcoordinate(), 
+							new LinkedList<Integer>(move._kills)), originalLocation));
 				}		
 		}
 		if(retlist.size() == 0){
