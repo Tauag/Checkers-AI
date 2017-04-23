@@ -53,7 +53,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	/*
 	 * Compiles a list of possible jump moves for a given piece
 	 */
-	public List<Move> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged, int originallocation){
+	public List<Move> hasJumpMoves(int location, ThirtyFiveRepCheckerPiece piece, boolean kinged, int originalLocation){
 		List<Move> possibleMoves = new LinkedList<Move>();
 		if(piece.getColor().equals("Black")){
 			//The logic works like this:
@@ -61,34 +61,34 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			//Second check that the space it is jumping over is filled and it is a piece of the opposing team
 			//Finally check that its destination is empty and therefore allows a jump to occur OR if the destination is the same and the jump is cyclical
 			if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 4].getColor().equals("White"))
-					if(_set[location + 8] == null || ((location + 8) == originallocation))
+					if(_set[location + 8] == null || ((location + 8) == originalLocation))
 						possibleMoves.add(new Move(location, (location + 8), (location + 4)));
 			if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 5].getColor().equals("White"))
-					if(_set[location + 10] == null || ((location + 10) == originallocation))
+					if(_set[location + 10] == null || ((location + 10) == originalLocation))
 						possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			if(kinged){
 				if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 5].getColor().equals("White"))
-						if(_set[location - 10] == null || ((location - 10) == originallocation))
+						if(_set[location - 10] == null || ((location - 10) == originalLocation))
 							possibleMoves.add(new Move(location, (location - 10), (location - 5)));
 				if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 4].getColor().equals("White"))
-						if(_set[location - 8] == null || ((location - 8) == originallocation))
+						if(_set[location - 8] == null || ((location - 8) == originalLocation))
 							possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			}
 		}
 		
 		if(piece.getColor().equals("White")){
 			if(isValid(location - 10) && isValid(location - 5) && _set[location - 5] != null && _set[location - 5].getColor().equals("Black"))
-					if(_set[location - 10] == null || ((location - 10) == originallocation))
+					if(_set[location - 10] == null || ((location - 10) == originalLocation))
 						possibleMoves.add(new Move(location, (location - 10), (location - 5)));
 			if(isValid(location - 8) && isValid(location - 4) && _set[location - 4] != null && _set[location - 4].getColor().equals("Black"))
-					if(_set[location - 8] == null || ((location - 8) == originallocation))
+					if(_set[location - 8] == null || ((location - 8) == originalLocation))
 						possibleMoves.add(new Move(location, (location - 8), (location - 4)));
 			if(kinged){
 				if(isValid(location + 8) && isValid(location + 4) && _set[location + 4] != null && _set[location + 4].getColor().equals("Black"))
-						if(_set[location + 8] == null || ((location + 8) == originallocation))
+						if(_set[location + 8] == null || ((location + 8) == originalLocation))
 							possibleMoves.add(new Move(location, (location + 8), (location + 4)));
 				if(isValid(location + 10) && isValid(location + 5) && _set[location + 5] != null && _set[location + 5].getColor().equals("Black"))
-						if(_set[location + 10] == null || ((location + 10) == originallocation))
+						if(_set[location + 10] == null || ((location + 10) == originalLocation))
 							possibleMoves.add(new Move(location, (location + 10), (location + 5)));
 			}
 		}
