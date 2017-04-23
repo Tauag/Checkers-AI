@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import Model.CheckersGameState;
 import Model.ThirtyFiveRepBoard;
-import Model.ThirtyFiveRepBoardRevised;
 import Model.ThirtyFiveRepCheckerPiece;
 
 public class ThirtyFiveRevisedTester {
