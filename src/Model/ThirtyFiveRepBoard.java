@@ -21,6 +21,10 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		_set = set;
 	}
 
+	public String getWinner(){
+		return _winner;
+	}
+
 	@Override
 	public String player() {
 		return _playerTurn;
@@ -234,13 +238,13 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 	}
 
 	@Override
-	public CheckersGameState result(Move x) {
-		if(x.kinged)
-			_set[x.old_coordinate].turnKing();
+	public CheckersGameState result(Move x){
+		ThirtyFiveRepCheckerPiece[] newset = this.cloneBoard();
 		
-		ThirtyFiveRepCheckerPiece[] newset = _set.clone();
-		if(x.new_coordinate != x.old_coordinate)
-		{
+		if(x.kinged)
+			newset[x.old_coordinate].turnKing();
+		
+		if(x.new_coordinate != x.old_coordinate){
 			newset[x.new_coordinate] = newset[x.old_coordinate];
 			newset[x.old_coordinate] = null;
 		}
@@ -338,48 +342,6 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		for(int i = 34; i > 21; i--)
 			if(i != 26)
 				_set[i] = new ThirtyFiveRepCheckerPiece("White");
-	}
-	
-	/*
-	 * Takes samuel coordinates and converts it to row,column format
-	 * Returns a Location object
-	 */
-	public Location samuelToXY(int pos){
-		int base, row, col;
-		
-		if(pos < 8){
-			base = (7 - pos) * 2;
-			row = base / 8;
-			col = base % 8;
-			if (row % 2 == 0) ++col;
-			row += 6;
-			col = 7 - col;
-		}
-		else if(pos < 17){
-			base = (16 - pos) * 2;
-			row = base / 8;
-			col = base % 8;
-			if (row % 2 == 0) ++col;
-			row += 4;
-			col = 7 - col;
-		}
-		else if(pos < 26){
-			base = (25 - pos) * 2;
-			row = base / 8;
-			col = base % 8;
-			if (row % 2 == 0) ++col;
-			row += 2;
-			col = 7 - col;
-		}
-		else{
-			base = (34 - pos) * 2;
-			row = base / 8;
-			col = base % 8;
-			if (row % 2 == 0) ++col;
-			col = 7 - col;
-		}
-		
-		return new Location(row, col);
 	}
 	
 	/*
@@ -490,6 +452,20 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		
 		return true;
+	}
+	
+	/*
+	 * Clones a board
+	 */
+	public ThirtyFiveRepCheckerPiece[] cloneBoard(){
+		ThirtyFiveRepCheckerPiece[] board = new ThirtyFiveRepCheckerPiece[35];
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null)
+				board[i] = new ThirtyFiveRepCheckerPiece(_set[i]);
+		}
+		
+		return board;
 	}
 	
 	/***************************************************************   HEURISTICS FUNCTIONS  ****************************************************************/

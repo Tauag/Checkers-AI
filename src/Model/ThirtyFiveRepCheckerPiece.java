@@ -9,6 +9,11 @@ public class ThirtyFiveRepCheckerPiece {
 		_color = color;
 	}
 	
+	public ThirtyFiveRepCheckerPiece(ThirtyFiveRepCheckerPiece piece){
+		_isKing = piece.isKing();
+		_color = piece.getColor();
+	}
+	
 	public void turnKing(){
 		_isKing = true;
 	}
