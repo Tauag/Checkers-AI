@@ -38,7 +38,7 @@ public class ServerPlayer extends GeneralPlayer{
     }
      
     public void setGameID(String id){
-	_gameID = id;
+    	_gameID = id;
     }
     
     public String getGameID() {
@@ -137,52 +137,74 @@ public class ServerPlayer extends GeneralPlayer{
 	 * Takes row,column coordinates and converts them to samuel coordinates
 	 */
 	public int xyToSamuel(int x, int y){
-		//TODO
-		return 0;
+		int base, samcoord;
+		
+		if(x > 5)
+			base = 0;
+		else if(x > 3)
+			base = 9;
+		else if(x > 1)
+			base = 18;
+		else
+			base = 27;
+		
+		base += (1 - (y % 2)) * 4;
+		samcoord = base + ((y / 2) % 4);
+		return samcoord;
 	}
-    
-    public static void main(String[] argv){
-    	String readMessage;
-    	ServerPlayer myClient = new ServerPlayer();
+	
+	public void runPlayer(){
+		String readMessage;
 
     	try{
-    	    myClient.readAndEcho(); // start message
-    	    myClient.readAndEcho(); // ID query
-    	    myClient.writeMessageAndEcho(_user); // user ID
+    	    readAndEcho(); // start message
+    	    readAndEcho(); // ID query
+    	    writeMessageAndEcho(_user); // user ID
     	    
-    	    myClient.readAndEcho(); // password query 
-    	    myClient.writeMessage(_password);  // password
+    	    readAndEcho(); // password query 
+    	    writeMessage(_password);  // password
 
-    	    myClient.readAndEcho(); // opponent query
-    	    myClient.writeMessageAndEcho(_opponent);  // opponent
+    	    readAndEcho(); // opponent query
+    	    writeMessageAndEcho(_opponent);  // opponent
 
-    	    myClient.setGameID(myClient.readAndEcho().substring(5,10)); // game 
-    	    myClient.setColor(myClient.readAndEcho().substring(6,11));  // color
-    	    System.out.println("I am playing as "+myClient.getColor()+ " in game number "+ myClient.getGameID());
-    	    readMessage = myClient.readAndEcho();  
+    	    setGameID(readAndEcho().substring(5,10)); // game 
+    	    setColor(readAndEcho().substring(6,11));  // color
+    	    System.out.println("I am playing as "+getColor()+ " in game number "+getGameID());
+    	    readMessage = readAndEcho();  
     	    // depends on color--a black move if i am white, Move:Black:i:j
     	    // otherwise a query to move, ?Move(time):
-    	    if (myClient.getColor().equals("White")) {
-    		readMessage = myClient.readAndEcho();  // move query
-    		myClient.writeMessageAndEcho("(2:4):(3:5)");
-    		readMessage = myClient.readAndEcho();  // white move
-    		readMessage = myClient.readAndEcho();  // black move
-    		readMessage = myClient.readAndEcho();  // move query
+    	    if (getColor().equals("White")) {
+    		readMessage = readAndEcho();  // move query
+    		writeMessageAndEcho("(2:4):(3:5)");
+    		readMessage = readAndEcho();  // white move
+    		readMessage = readAndEcho();  // black move
+    		readMessage = readAndEcho();  // move query
     		// here you would need to move again
     	    }
     	    else {
-    		myClient.writeMessageAndEcho("(5:3):(4:4)");
-    		readMessage = myClient.readAndEcho();  // black move
-    		readMessage = myClient.readAndEcho();  // white move
-    		readMessage = myClient.readAndEcho();  // move query
+    		writeMessageAndEcho("(5:3):(4:4)");
+    		readMessage = readAndEcho();  // black move
+    		readMessage = readAndEcho();  // white move
+    		readMessage = readAndEcho();  // move query
     		// here you would need to move again
     	    }
     	   
-    	    myClient.getSocket().close();
+    	    getSocket().close();
     	} 
-    	catch  (IOException e) {
+    	catch(IOException e){
     	    System.out.println("Failed in read/close");
     	    System.exit(1);
+    	}
+	}
+    
+    public static void main(String[] argv){
+    	ServerPlayer sp = new ServerPlayer();
+    	
+    	for(int i = 0; i < 8; i++){
+    		for(int j = 0; j < 8; j+=2){
+    			System.out.print("(" + Integer.toString(i) + ", " + Integer.toString(j + (i % 2)) + ") >> ");
+    			System.out.println(sp.xyToSamuel(i, j + (i % 2)));
+    		}
     	}
     }
 }
