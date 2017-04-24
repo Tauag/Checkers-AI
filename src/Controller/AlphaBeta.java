@@ -24,14 +24,14 @@ public class AlphaBeta {
 	public int minValue(CheckersGameState state, int maxDepth, int alpha, int beta, String player){
 		if(state.isTerminal())
 			return state.utility(player);
-		else if(maxDepth == 0)
-			return state.analyze(player);
+		else if(maxDepth == 0){
+			state.printState();
+			return state.analyze(player);}
 		else{
 			int value = Integer.MAX_VALUE;
 			int temp;
 			int beta_prime = beta;
 			for(Move move : state.actions()){
-				state.printState();
 				temp = maxValue(state.result(move), maxDepth - 1, alpha, beta_prime, player);
 				if(temp < value)
 					value = temp;
@@ -47,14 +47,14 @@ public class AlphaBeta {
 	public int maxValue(CheckersGameState state, int maxDepth, int alpha, int beta, String player){
 		if(state.isTerminal())
 			return state.utility(player);
-		else if(maxDepth == 0)
-			return state.analyze(player);
+		else if(maxDepth == 0){
+			state.printState();
+			return state.analyze(player);}
 		else{
 			int value = Integer.MIN_VALUE;
 			int temp;
 			int alpha_prime = alpha;
 			for(Move move : state.actions()){
-				state.printState();
 				temp = minValue(state.result(move), maxDepth - 1, alpha_prime, beta, player);
 				if(temp > value)
 					value = temp;

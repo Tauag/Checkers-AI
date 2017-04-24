@@ -1,5 +1,8 @@
 package Test;
 
+import Controller.AlphaBeta;
+import Model.CheckersGameState;
+import Model.Move;
 import Model.ThirtyFiveRepBoard;
 import Model.ThirtyFiveRepCheckerPiece;
 
@@ -7,13 +10,40 @@ public class AlphaBetaTests
 {
 	public static void main(String[] args)
 	{
-		AlphaBetaTests obj = new AlphaBetaTests();
+//		AlphaBetaTests obj = new AlphaBetaTests();
+		AlphaBeta tester = new AlphaBeta();
+		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard();
+//		double time = System.nanoTime();
+		
+		
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		ThirtyFiveRepBoard board = new ThirtyFiveRepBoard("Black", set);
+		
+		set[9] = new ThirtyFiveRepCheckerPiece("Black");
+		set[11] = new ThirtyFiveRepCheckerPiece("Black");
+		set[15] = new ThirtyFiveRepCheckerPiece("Black");
+		
+		set[34] = new ThirtyFiveRepCheckerPiece("White");
+		set[23] = new ThirtyFiveRepCheckerPiece("White");
+		set[33] = new ThirtyFiveRepCheckerPiece("White");
+		set[4] = new ThirtyFiveRepCheckerPiece("White");
+//		set[4].turnKing();
+		
 //		obj.apexTest();
 //		obj.advTest();
 //		obj.kcentTest();
 //		obj.mobTest();
 //		obj.poleTest();
-		obj.relTest();
+//		obj.relTest();
+		System.out.println("Initial State");
+		System.out.println("***********************************");
+		board.printState();
+		System.out.println("Final State");
+		System.out.println("***********************************");
+		Move move = tester.alphabeta(board, 5);
+		
+		CheckersGameState newboard = board.result(move);
+		newboard.printState();
 	}
 	
 	public void apexTest()
