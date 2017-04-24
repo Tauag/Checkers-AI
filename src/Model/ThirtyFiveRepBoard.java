@@ -239,10 +239,11 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 
 	@Override
 	public CheckersGameState result(Move x){
-		if(x.kinged)
-			_set[x.old_coordinate].turnKing();
+		ThirtyFiveRepCheckerPiece[] newset = this.cloneBoard();
 		
-		ThirtyFiveRepCheckerPiece[] newset = _set.clone();
+		if(x.kinged)
+			newset[x.old_coordinate].turnKing();
+		
 		if(x.new_coordinate != x.old_coordinate){
 			newset[x.new_coordinate] = newset[x.old_coordinate];
 			newset[x.old_coordinate] = null;
@@ -451,6 +452,20 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		
 		return true;
+	}
+	
+	/*
+	 * Clones a board
+	 */
+	public ThirtyFiveRepCheckerPiece[] cloneBoard(){
+		ThirtyFiveRepCheckerPiece[] board = new ThirtyFiveRepCheckerPiece[35];
+		
+		for(int i = 0; i < 35; i++){
+			if(_set[i] != null)
+				board[i] = new ThirtyFiveRepCheckerPiece(_set[i]);
+		}
+		
+		return board;
 	}
 	
 	/***************************************************************   HEURISTICS FUNCTIONS  ****************************************************************/

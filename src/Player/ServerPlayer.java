@@ -133,6 +133,9 @@ public class ServerPlayer extends GeneralPlayer{
 		return new Location(row, col);
 	}
 	
+	/*
+	 * Takes row,column coordinates and converts them to samuel coordinates
+	 */
 	public int xyToSamuel(int x, int y){
 		//TODO
 		return 0;
