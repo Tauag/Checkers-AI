@@ -20,4 +20,8 @@ public class Location {
 		else
 			return false;
 	}
+	
+	public String toString(){
+		return "(" + Integer.toString(_row) + ", " + Integer.toString(_column) + ")";
+	}
 }
