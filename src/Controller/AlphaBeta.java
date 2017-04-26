@@ -33,10 +33,7 @@ public class AlphaBeta {
 			int temp;
 			int beta_prime = beta;
 			for(Move move : state.actions()){
-<<<<<<< HEAD
-=======
 //				state.printState();
->>>>>>> 1cfeb15eab32a413e24cbb8cff008be0d732add0
 				temp = maxValue(state.result(move), maxDepth - 1, alpha, beta_prime, player);
 				if(temp < value)
 					value = temp;
@@ -61,10 +58,7 @@ public class AlphaBeta {
 			int temp;
 			int alpha_prime = alpha;
 			for(Move move : state.actions()){
-<<<<<<< HEAD
-=======
 //				state.printState();
->>>>>>> 1cfeb15eab32a413e24cbb8cff008be0d732add0
 				temp = minValue(state.result(move), maxDepth - 1, alpha_prime, beta, player);
 				if(temp > value)
 					value = temp;

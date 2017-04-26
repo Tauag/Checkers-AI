@@ -1,15 +1,10 @@
 package Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
-
 import Controller.AlphaBeta;
 import Controller.ConstantsLog;
-import Controller.ControllerConstants;
 import Model.ThirtyFiveRepBoard;
-import Model.ThirtyFiveRepCheckerPiece;
 
 public class GameTestLogging {
 	
