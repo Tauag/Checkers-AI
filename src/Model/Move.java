@@ -3,10 +3,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Move{
-	int old_coordinate;
-	int new_coordinate;
-	boolean kinged;
-	List<Integer> _kills;
+	public int old_coordinate;
+	public int new_coordinate;
+	public boolean kinged;
+	public List<Integer> _kills;
 	
 	public Move(int oldinput){
 		old_coordinate = oldinput;

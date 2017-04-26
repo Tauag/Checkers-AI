@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import Model.Location;
+import Model.Move;
 
 public class ServerPlayer extends GeneralPlayer{
 	private final static String _user = "1";
@@ -18,7 +19,6 @@ public class ServerPlayer extends GeneralPlayer{
     private PrintWriter _out = null;
     private BufferedReader _in = null;
     private String _gameID;
-    private String _myColor;
   
     public ServerPlayer(){
     	super();
@@ -43,14 +43,6 @@ public class ServerPlayer extends GeneralPlayer{
     
     public String getGameID() {
     	return _gameID;
-    }
-
-    public void setColor(String color){
-    	_myColor = color;
-    }
-    
-    public String getColor() {
-    	return _myColor;
     }
 
     public String readAndEcho() throws IOException
@@ -153,11 +145,26 @@ public class ServerPlayer extends GeneralPlayer{
 		return samcoord;
 	}
 	
+	public String moveToCommand(Move move){
+		String retString = "Move:" + getPlayer() + ":" + samuelToXY(move.old_coordinate);
+		int compCoord = move.old_coordinate;
+		int travel;
+		
+		for(int kill : move._kills){
+			travel = (compCoord - kill) * 2;
+			retString += (":" + samuelToXY(kill + travel)); 
+			compCoord = kill + travel;
+		}
+		
+		retString += (":" + samuelToXY(move.new_coordinate));
+		return retString;
+	}
+	
 	public void runPlayer(){
 		String readMessage;
-
-    	try{
-    	    readAndEcho(); // start message
+		
+		try{
+			readAndEcho(); // start message
     	    readAndEcho(); // ID query
     	    writeMessageAndEcho(_user); // user ID
     	    
@@ -168,12 +175,18 @@ public class ServerPlayer extends GeneralPlayer{
     	    writeMessageAndEcho(_opponent);  // opponent
 
     	    setGameID(readAndEcho().substring(5,10)); // game 
-    	    setColor(readAndEcho().substring(6,11));  // color
-    	    System.out.println("I am playing as "+getColor()+ " in game number "+getGameID());
+    	    setPlayer(readAndEcho().substring(6,11));  // color
+    	    System.out.println("I am playing as "+getPlayer()+ " in game number "+getGameID());
+		} catch(IOException error){
+			System.out.println("Failed to authorize with server: " + error);
+			System.exit(1);
+		}
+
+    	try{
     	    readMessage = readAndEcho();  
     	    // depends on color--a black move if i am white, Move:Black:i:j
     	    // otherwise a query to move, ?Move(time):
-    	    if (getColor().equals("White")) {
+    	    if (getPlayer().equals("White")) {
     		readMessage = readAndEcho();  // move query
     		writeMessageAndEcho("(2:4):(3:5)");
     		readMessage = readAndEcho();  // white move
@@ -199,12 +212,9 @@ public class ServerPlayer extends GeneralPlayer{
     
     public static void main(String[] argv){
     	ServerPlayer sp = new ServerPlayer();
-    	
-    	for(int i = 0; i < 8; i++){
-    		for(int j = 0; j < 8; j+=2){
-    			System.out.print("(" + Integer.toString(i) + ", " + Integer.toString(j + (i % 2)) + ") >> ");
-    			System.out.println(sp.xyToSamuel(i, j + (i % 2)));
-    		}
-    	}
+    	sp.setPlayer("Black");
+    	Move mv = sp.findBestPlayerMove();
+    	System.out.println(mv);
+    	System.out.println(sp.moveToCommand(mv));
     }
 }
