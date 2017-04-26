@@ -2,7 +2,10 @@ package Test;
 
 import Controller.AlphaBeta;
 import Model.CheckersGameState;
+<<<<<<< HEAD
 import Model.Move;
+=======
+>>>>>>> 1cfeb15eab32a413e24cbb8cff008be0d732add0
 import Model.ThirtyFiveRepBoard;
 import Model.ThirtyFiveRepCheckerPiece;
 
@@ -39,6 +42,7 @@ public class AlphaBetaTests
 //		obj.mobTest();
 //		obj.poleTest();
 //		obj.relTest();
+<<<<<<< HEAD
 		System.out.println("Initial State");
 		System.out.println("***********************************");
 		board.printState();
@@ -52,6 +56,27 @@ public class AlphaBetaTests
 		
 		CheckersGameState newboard = board.result(move);
 		newboard.printState();
+=======
+		obj.AlphaBetaSearchTest();
+	}
+	
+	public void AlphaBetaSearchTest()
+	{
+		System.out.println("ALPHABETA TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+		set[11] = new ThirtyFiveRepCheckerPiece("White");
+		AlphaBeta Tester = new AlphaBeta();
+		ThirtyFiveRepBoard Board = new ThirtyFiveRepBoard("Black", set);
+		Board.initBoard();
+		while(!Board.isTerminal())
+		{
+			System.out.println("**********************************");
+			Board = (ThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 3));
+			Board.printState();
+		}
+		Board.printState();
+>>>>>>> 1cfeb15eab32a413e24cbb8cff008be0d732add0
 	}
 	
 	public void apexTest()
