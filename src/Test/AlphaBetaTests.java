@@ -1,5 +1,7 @@
 package Test;
 
+import Controller.AlphaBeta;
+import Model.CheckersGameState;
 import Model.ThirtyFiveRepBoard;
 import Model.ThirtyFiveRepCheckerPiece;
 
@@ -13,7 +15,26 @@ public class AlphaBetaTests
 //		obj.kcentTest();
 //		obj.mobTest();
 //		obj.poleTest();
-		obj.relTest();
+//		obj.relTest();
+		obj.AlphaBetaSearchTest();
+	}
+	
+	public void AlphaBetaSearchTest()
+	{
+		System.out.println("ALPHABETA TEST");
+		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
+		set[6] = new ThirtyFiveRepCheckerPiece("Black");
+		set[11] = new ThirtyFiveRepCheckerPiece("White");
+		AlphaBeta Tester = new AlphaBeta();
+		ThirtyFiveRepBoard Board = new ThirtyFiveRepBoard("Black", set);
+		Board.initBoard();
+		while(!Board.isTerminal())
+		{
+			System.out.println("**********************************");
+			Board = (ThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 3));
+			Board.printState();
+		}
+		Board.printState();
 	}
 	
 	public void apexTest()

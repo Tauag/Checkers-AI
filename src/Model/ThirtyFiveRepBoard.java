@@ -276,18 +276,43 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		while(i < 35){
 			curr = i;
 			while(i < curr + 4){
-				System.out.print("-" + pieceToString(_set[i]));
+				System.out.print(" - " + pieceToString(_set[i]));
 				i++;
 			}
 			System.out.println();
+			System.out.print(" ");
 			curr = i;
 			while(i < curr + 4){
-				System.out.print(pieceToString(_set[i]) + "-");
+				System.out.print(pieceToString(_set[i]) + " - ");
 				i++;
 			}
 			i++;
 			System.out.println();
 		}	
+	}
+	
+	public String printStatetoString()
+	{
+		String output = "";
+		int i = 0;
+		int curr;
+		while(i < 35){
+			curr = i;
+			while(i < curr + 4){
+				output = output + " - " + pieceToString(_set[i]);
+				i++;
+			}
+			output = output + "\n";
+			output = output + " ";
+			curr = i;
+			while(i < curr + 4){
+				output = output + pieceToString(_set[i]) + " - ";
+				i++;
+			}
+			i++;
+			output = output + "\n";
+		}	
+		return output;
 	}
 	
 	public String pieceToString(ThirtyFiveRepCheckerPiece x){
@@ -537,8 +562,34 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 						heuristicScore--;
 			}
 		}
-		System.out.println(heuristicScore);
+//		System.out.println(heuristicScore);
 		return heuristicScore;
+	}
+	
+	public int AGGRO(String player)
+	{
+		String opponentpiececolor = "";
+		String mypiececolor = "";
+		if(player.equals("White"))
+		{
+			opponentpiececolor = "B";
+			mypiececolor = "W";
+		}
+		else
+		{
+			opponentpiececolor = "W";
+			mypiececolor = "B";
+		}
+			
+		List<ThirtyFiveRepCheckerPiece> OpposingPlayersPieces = new LinkedList<ThirtyFiveRepCheckerPiece>();
+		for(int i = 0; i < _set.length; i++)
+		{
+			if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
+			{
+				
+			}
+		}
+		return 0;
 	}
 	
 	/*
