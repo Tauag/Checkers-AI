@@ -12,22 +12,26 @@ public class AlphaBetaTests
 	{
 //		AlphaBetaTests obj = new AlphaBetaTests();
 		AlphaBeta tester = new AlphaBeta();
-		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard();
+//		ThirtyFiveRepBoard state = new ThirtyFiveRepBoard();
 //		double time = System.nanoTime();
 		
 		
 		ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 		ThirtyFiveRepBoard board = new ThirtyFiveRepBoard("Black", set);
 		
-		set[9] = new ThirtyFiveRepCheckerPiece("Black");
-		set[11] = new ThirtyFiveRepCheckerPiece("Black");
+		set[27] = new ThirtyFiveRepCheckerPiece("Black");
+		set[28] = new ThirtyFiveRepCheckerPiece("Black");
+		set[29] = new ThirtyFiveRepCheckerPiece("Black");
+		set[30] = new ThirtyFiveRepCheckerPiece("Black");
+		set[14] = new ThirtyFiveRepCheckerPiece("Black");
 		set[15] = new ThirtyFiveRepCheckerPiece("Black");
 		
-		set[34] = new ThirtyFiveRepCheckerPiece("White");
-		set[23] = new ThirtyFiveRepCheckerPiece("White");
+		set[31] = new ThirtyFiveRepCheckerPiece("White");
+		set[32] = new ThirtyFiveRepCheckerPiece("White");
 		set[33] = new ThirtyFiveRepCheckerPiece("White");
-		set[4] = new ThirtyFiveRepCheckerPiece("White");
-//		set[4].turnKing();
+		set[34] = new ThirtyFiveRepCheckerPiece("White");
+		set[22] = new ThirtyFiveRepCheckerPiece("White");
+
 		
 //		obj.apexTest();
 //		obj.advTest();
@@ -40,7 +44,11 @@ public class AlphaBetaTests
 		board.printState();
 		System.out.println("Final State");
 		System.out.println("***********************************");
-		Move move = tester.alphabeta(board, 5);
+		final double start = System.nanoTime();
+		Move move = tester.alphabeta(board, 2);
+		final double end = System.nanoTime();
+		
+		System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
 		
 		CheckersGameState newboard = board.result(move);
 		newboard.printState();

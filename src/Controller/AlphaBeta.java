@@ -10,7 +10,7 @@ public class AlphaBeta {
 		int temp;
 		
 		for(Move a : state.actions()){
-			state.printState();
+//			state.printState();
 			temp = minValue(state.result(a), maxDepth - 1, Integer.MIN_VALUE, Integer.MAX_VALUE, state.player());
 			if(temp > maxValue){
 				maxAction = a;
@@ -25,6 +25,7 @@ public class AlphaBeta {
 		if(state.isTerminal())
 			return state.utility(player);
 		else if(maxDepth == 0){
+			System.out.println("**************************************");
 			state.printState();
 			return state.analyze(player);}
 		else{
@@ -48,6 +49,7 @@ public class AlphaBeta {
 		if(state.isTerminal())
 			return state.utility(player);
 		else if(maxDepth == 0){
+			System.out.println("**************************************");
 			state.printState();
 			return state.analyze(player);}
 		else{
