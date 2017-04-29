@@ -2,6 +2,8 @@ package Model;
 import java.util.LinkedList;
 import java.util.List;
 import Controller.WeightConstants;
+import MachineLearning.MLControllerConstants;
+import MachineLearning.MLWeightConstants;
 import Controller.ControllerConstants;
 
 public class ThirtyFiveRepBoard implements CheckersGameState{
@@ -760,5 +762,11 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 		
 		return heuristicScore;
+	}
+
+	@Override
+	public int analyzeML(String player, MLControllerConstants playercontrols, MLWeightConstants playerweights) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
