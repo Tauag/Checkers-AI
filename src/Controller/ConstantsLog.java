@@ -2,7 +2,7 @@ package Controller;
 
 public class ConstantsLog {
 	public String ConstantsUsed()
-	{	
+	{	/*
 		String output = "";
 		if(ControllerConstants._ADV == true)
 			output = output + "_ADV:TRUE WITH CONSTANT " + WeightConstants._ADV + "\n";
@@ -41,5 +41,7 @@ public class ConstantsLog {
 		else
 			output = output + "_RELATIVECOUNT:FALSE WITH CONSTANT " + WeightConstants._RELATIVECOUNT + "\n";
 		return output;
+		*/
+		return null;
 	}
 }
