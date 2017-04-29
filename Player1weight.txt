@@ -1,0 +1,9 @@
+_ADV = 1
+_APEX = 1
+_BACK = 1
+_CENT = 1
+_CNTR = 1
+_KCENT = 1
+_MOB = 1
+_POLE = 1
+_RELATIVECOUNT = 1
