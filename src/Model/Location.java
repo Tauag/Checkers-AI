@@ -22,6 +22,6 @@ public class Location {
 	}
 	
 	public String toString(){
-		return "(" + Integer.toString(_row) + ", " + Integer.toString(_column) + ")";
+		return "(" + Integer.toString(_row) + ":" + Integer.toString(_column) + ")";
 	}
 }

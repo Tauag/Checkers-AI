@@ -537,7 +537,7 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 						heuristicScore--;
 			}
 		}
-		System.out.println(heuristicScore);
+		
 		return heuristicScore;
 	}
 	
