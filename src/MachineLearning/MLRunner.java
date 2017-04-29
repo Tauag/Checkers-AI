@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import Model.MLThirtyFiveRepBoard;
+import Model.Move;
 import Model.ThirtyFiveRepCheckerPiece;
 
 public class MLRunner {
@@ -29,8 +30,11 @@ public class MLRunner {
 			while(!Board.isTerminal())
 			{
 				System.out.println("**********************************");
-				Board =  (MLThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 8));
-				Board.printState();
+				double start = System.nanoTime();
+				Board =  (MLThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 10));
+				double end = System.nanoTime();
+				Board.printState();				
+				System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
 			}
 			System.out.println(Board.player());
 			
