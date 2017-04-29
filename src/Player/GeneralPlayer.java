@@ -55,4 +55,9 @@ public class GeneralPlayer {
 		else
 			return -1;
 	}
+	
+	public ThirtyFiveRepBoard getBoard()
+	{
+		return _board;
+	}
 }

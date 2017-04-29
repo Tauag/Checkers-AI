@@ -6,9 +6,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
+
 import Model.Location;
+import Model.Move;
 
 public class ServerPlayer extends GeneralPlayer{
+	// This is intended to work on a University of Connecticut server, only used for class presentation
 	private final static String _user = "1";
     private final static String _password = "109524";
     private final static String _opponent = "0";
@@ -18,7 +22,6 @@ public class ServerPlayer extends GeneralPlayer{
     private PrintWriter _out = null;
     private BufferedReader _in = null;
     private String _gameID;
-    private String _myColor;
   
     public ServerPlayer(){
     	super();
@@ -38,19 +41,11 @@ public class ServerPlayer extends GeneralPlayer{
     }
      
     public void setGameID(String id){
-	_gameID = id;
+    	_gameID = id;
     }
     
     public String getGameID() {
     	return _gameID;
-    }
-
-    public void setColor(String color){
-    	_myColor = color;
-    }
-    
-    public String getColor() {
-    	return _myColor;
     }
 
     public String readAndEcho() throws IOException
@@ -137,52 +132,134 @@ public class ServerPlayer extends GeneralPlayer{
 	 * Takes row,column coordinates and converts them to samuel coordinates
 	 */
 	public int xyToSamuel(int x, int y){
-		//TODO
-		return 0;
+		int base, samcoord;
+		
+		if(x > 5)
+			base = 0;
+		else if(x > 3)
+			base = 9;
+		else if(x > 1)
+			base = 18;
+		else
+			base = 27;
+		
+		base += (1 - (y % 2)) * 4;
+		samcoord = base + ((y / 2) % 4);
+		return samcoord;
 	}
-    
-    public static void main(String[] argv){
-    	String readMessage;
-    	ServerPlayer myClient = new ServerPlayer();
+	
+	/*
+	 * Outputs a command string tailored for the server's input
+	 */
+	public String moveToCommand(Move move){
+		String retString = samuelToXY(move.old_coordinate).toString();
+		int compCoord = move.old_coordinate;
+		int travel;
+		
+		if(move._kills.size() > 1){
+			for(int kill : move._kills){
+				travel = (compCoord - kill) * 2;
+				retString += (":" + samuelToXY(compCoord - travel)); 
+				compCoord = compCoord - travel;
+			}
+		}
+		if(move.old_coordinate != move.new_coordinate && move.new_coordinate != compCoord)
+			retString += (":" + samuelToXY(move.new_coordinate));
+		
+		return retString;
+	}
+	
+	/*
+	 * Outputs a Move object that can be used on the board
+	 */
+	public Move commandToMove(String command){
+		String[] command_parts = command.split(":");
+		int movelength = command_parts.length;
+		Move retmove = new Move(xyToSamuel(Character.getNumericValue(command_parts[2].charAt(1)), Character.getNumericValue(command_parts[3].charAt(0))));
+		retmove.new_coordinate = 
+				xyToSamuel(Character.getNumericValue(command_parts[movelength - 2].charAt(1)), Character.getNumericValue(command_parts[movelength - 1].charAt(0)));
+		
+		if(Math.abs(retmove.old_coordinate - retmove.new_coordinate) > 5 || movelength > 6){
+			int sam, lastsam, diff;
+			lastsam = retmove.old_coordinate;
+			
+			for(int i = 4; i < movelength; i+=2){
+				sam = xyToSamuel(Character.getNumericValue(command_parts[i].charAt(1)), Character.getNumericValue(command_parts[i+1].charAt(0)));
+				diff = (sam - lastsam) / 2;
+				retmove.addToKills((sam - diff));
+				lastsam = sam;
+			}
+		}
+		
+		
+		return retmove;
+	}
+	
+	public void runPlayer(){
+		String readMessage;
+		Move nextMove;
+		
+		try{
+			readAndEcho(); // start message
+    	    readAndEcho(); // ID query
+    	    writeMessageAndEcho(_user); // user ID
+    	    
+    	    readAndEcho(); // password query 
+    	    writeMessage(_password);  // password
+
+    	    readAndEcho(); // opponent query
+    	    writeMessageAndEcho(_opponent);  // opponent
+
+    	    setGameID(readAndEcho().substring(5,10)); // game 
+    	    setPlayer(readAndEcho().substring(6,11));  // color
+    	    System.out.println("I am playing as "+getPlayer()+ " in game number "+getGameID());
+		} catch(IOException error){
+			System.out.println("Failed to authorize with server: " + error);
+			System.exit(1);
+		}
 
     	try{
-    	    myClient.readAndEcho(); // start message
-    	    myClient.readAndEcho(); // ID query
-    	    myClient.writeMessageAndEcho(_user); // user ID
-    	    
-    	    myClient.readAndEcho(); // password query 
-    	    myClient.writeMessage(_password);  // password
-
-    	    myClient.readAndEcho(); // opponent query
-    	    myClient.writeMessageAndEcho(_opponent);  // opponent
-
-    	    myClient.setGameID(myClient.readAndEcho().substring(5,10)); // game 
-    	    myClient.setColor(myClient.readAndEcho().substring(6,11));  // color
-    	    System.out.println("I am playing as "+myClient.getColor()+ " in game number "+ myClient.getGameID());
-    	    readMessage = myClient.readAndEcho();  
+    	    readMessage = readAndEcho();  
     	    // depends on color--a black move if i am white, Move:Black:i:j
     	    // otherwise a query to move, ?Move(time):
-    	    if (myClient.getColor().equals("White")) {
-    		readMessage = myClient.readAndEcho();  // move query
-    		myClient.writeMessageAndEcho("(2:4):(3:5)");
-    		readMessage = myClient.readAndEcho();  // white move
-    		readMessage = myClient.readAndEcho();  // black move
-    		readMessage = myClient.readAndEcho();  // move query
-    		// here you would need to move again
+    	    if (getPlayer().equals("White")) {
+    	    	while(!gameOver()){
+    	    		if(!readMessage.split(":")[0].equals("Result"))
+	    	    		advanceMove(commandToMove(readMessage));
+    	    		
+			    	readMessage = readAndEcho();  // move query
+			    	nextMove = findBestPlayerMove();
+			    	System.out.println(nextMove);
+			    	writeMessageAndEcho(moveToCommand(nextMove));
+			    	readMessage = readAndEcho();  // white move
+			    	readMessage = readAndEcho();  // black move
+    	    	}
     	    }
     	    else {
-    		myClient.writeMessageAndEcho("(5:3):(4:4)");
-    		readMessage = myClient.readAndEcho();  // black move
-    		readMessage = myClient.readAndEcho();  // white move
-    		readMessage = myClient.readAndEcho();  // move query
-    		// here you would need to move again
+    	    	while(!gameOver()){
+	    	    	nextMove = findBestPlayerMove();
+			    	System.out.println(nextMove);
+			    	writeMessageAndEcho(moveToCommand(nextMove));
+			    	readMessage = readAndEcho();  // black move
+			    	readMessage = readAndEcho();  // white move
+			    		
+			    	if(!readMessage.split(":")[0].equals("Result"))
+			    		advanceMove(commandToMove(readMessage));
+			    		
+			    	readMessage = readAndEcho();  // move query
+    	    	}
     	    }
     	   
-    	    myClient.getSocket().close();
+    	    getSocket().close();
     	} 
-    	catch  (IOException e) {
+    	catch(IOException e){
     	    System.out.println("Failed in read/close");
     	    System.exit(1);
     	}
+	}
+    
+    public static void main(String[] argv){
+    	ServerPlayer sp = new ServerPlayer();
+    	sp.runPlayer();
     }
 }
