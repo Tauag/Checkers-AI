@@ -568,32 +568,6 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		return heuristicScore;
 	}
 	
-	public int AGGRO(String player)
-	{
-		String opponentpiececolor = "";
-		String mypiececolor = "";
-		if(player.equals("White"))
-		{
-			opponentpiececolor = "B";
-			mypiececolor = "W";
-		}
-		else
-		{
-			opponentpiececolor = "W";
-			mypiececolor = "B";
-		}
-			
-		List<Integer> OpposingPlayersPieces = new LinkedList<Integer>();
-		List<Integer> CurrentPlayerPieces = new LinkedList<Integer>();
-		for(int i = 0; i < _set.length; i++)
-		{
-			if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
-			{
-				
-			}
-		}
-		return 0;
-	}
 	
 	/*
 	 * -1 if there are no kings, positions 6 and 28 are not filled with active pieces and neither of them are 
