@@ -15,7 +15,7 @@ public class ServerPlayer extends GeneralPlayer{
 	// This is intended to work on a University of Connecticut server, only used for class presentation
 	private final static String _user = "1";
     private final static String _password = "109524";
-    private final static String _opponent = "0";
+    private final static String _opponent = "2";
     private final String _machine  = "icarus.engr.uconn.edu"; 
     private int _port = 3499;
     private Socket _socket = null;
@@ -179,6 +179,11 @@ public class ServerPlayer extends GeneralPlayer{
 		retmove.new_coordinate = 
 				xyToSamuel(Character.getNumericValue(command_parts[movelength - 2].charAt(1)), Character.getNumericValue(command_parts[movelength - 1].charAt(0)));
 		
+		if(command_parts[1].equals("White") && retmove.new_coordinate < 5)
+			retmove.kinged = true;
+		if(command_parts[1].equals("Black") && retmove.new_coordinate > 31)
+			retmove.kinged = true;
+		
 		if(Math.abs(retmove.old_coordinate - retmove.new_coordinate) > 5 || movelength > 6){
 			int sam, lastsam, diff;
 			lastsam = retmove.old_coordinate;
@@ -188,6 +193,11 @@ public class ServerPlayer extends GeneralPlayer{
 				diff = (sam - lastsam) / 2;
 				retmove.addToKills((sam - diff));
 				lastsam = sam;
+				
+				if(command_parts[1].equals("White") && sam < 5)
+					retmove.kinged = true;
+				if(command_parts[1].equals("Black") && sam > 31)
+					retmove.kinged = true;
 			}
 		}
 		
@@ -267,6 +277,7 @@ public class ServerPlayer extends GeneralPlayer{
     	    	}
     	    }
     	   
+    	    printBoard();
     	    getSocket().close();
     	} 
     	catch(IOException e){

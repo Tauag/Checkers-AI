@@ -55,4 +55,8 @@ public class GeneralPlayer {
 		else
 			return -1;
 	}
+	
+	public void printBoard(){
+		_board.printState();
+	}
 }
