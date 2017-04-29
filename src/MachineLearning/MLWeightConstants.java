@@ -15,6 +15,7 @@ public class MLWeightConstants {
 	public int _MOB = 1;
 	public int _POLE = 1;
 	public int _RELATIVECOUNT = 1;
+	public int _RELATIVEKINGS = 1;
 	
 	MLWeightConstants(String filename)
 	{
@@ -44,6 +45,8 @@ public class MLWeightConstants {
 				_POLE = Integer.parseInt(lineresult[2]);
 			lineresult = myreadline.split(" ");
 				_RELATIVECOUNT = Integer.parseInt(lineresult[2]);
+			lineresult = myreadline.split(" ");
+				_RELATIVEKINGS = Integer.parseInt(lineresult[2]);
 		}
 		catch(FileNotFoundException ex) {
 			System.out.println("Oh no");

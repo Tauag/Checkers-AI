@@ -18,6 +18,9 @@ public class MLRunner {
 	{
 
 			//Initialize all the tools we need
+			ReGenerateWeights("Black");
+			ReGenerateWeights("White");
+			int movestaken = 0;
 			ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 			MLControllerConstants p1const = new MLControllerConstants("Player1const.txt");
 			MLWeightConstants p1weights = new MLWeightConstants("Player1weight.txt");
@@ -27,11 +30,12 @@ public class MLRunner {
 			MLAlphaBeta Tester = new MLAlphaBeta(p1const, p1weights, p2const, p2weights);
 			MLThirtyFiveRepBoard Board = new MLThirtyFiveRepBoard("Black", set);
 			Board.initBoard();
-			while(!Board.isTerminal())
+			while(!Board.isTerminal() && movestaken<150)
 			{
+				movestaken++;
 				System.out.println("**********************************");
 				double start = System.nanoTime();
-				Board =  (MLThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 10));
+				Board =  (MLThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 9));
 				double end = System.nanoTime();
 				Board.printState();				
 				System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
@@ -66,7 +70,7 @@ public class MLRunner {
 			BufferedWriter MyWriter = new BufferedWriter(new FileWriter(new File("Player1weight.txt")));
 			for(int i = 0; i < LineList.size(); i++)
 			{
-				LineList.get(i)[2] = Integer.toString((rand.nextInt(10) + 1));
+				LineList.get(i)[2] = Integer.toString((rand.nextInt(5) + 1));
 				towrite = LineList.get(i)[0] + " " + LineList.get(i)[1] + " " + LineList.get(i)[2];
 				System.out.println(towrite);
 				MyWriter.write(towrite);
@@ -87,7 +91,7 @@ public class MLRunner {
 			BufferedWriter MyWriter = new BufferedWriter(new FileWriter(new File("Player2weight.txt")));
 			for(int i = 0; i < LineList.size(); i++)
 			{
-				LineList.get(i)[2] = Integer.toString((rand.nextInt(10) + 1));
+				LineList.get(i)[2] = Integer.toString((rand.nextInt(5) + 1));
 				towrite = LineList.get(i)[0] + " " + LineList.get(i)[1] + " " + LineList.get(i)[2];
 				System.out.println(towrite);
 				MyWriter.write(towrite);

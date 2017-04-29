@@ -14,6 +14,7 @@ public class MLControllerConstants {
 	public boolean _MOB = true;
 	public boolean _POLE = true;
 	public boolean _RELATIVECOUNT = true;	
+	public boolean _RELATIVEKINGS = true;
 	public int _MAXDEPTH = 3;
 	
 	MLControllerConstants(String filename)
@@ -52,6 +53,9 @@ public class MLControllerConstants {
 			lineresult = myreadline.split(" ");
 			if(lineresult[2].equals("false"))
 				_RELATIVECOUNT = false;
+			lineresult = myreadline.split(" ");
+			if(lineresult[2].equals("false"))
+				_RELATIVEKINGS = false;
 		}
 		catch(FileNotFoundException ex) {
 			System.out.println("Oh no");

@@ -581,16 +581,25 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			{
 				opponentpiececolor = "W";
 				mypiececolor = "B";
-			}
-				
-			List<ThirtyFiveRepCheckerPiece> OpposingPlayersPieces = new LinkedList<ThirtyFiveRepCheckerPiece>();
+			}		
+			List<Integer> OpposingPlayersPieces = new LinkedList<Integer>();
+			List<Integer> CurrentPlayerPieces = new LinkedList<Integer>();
+			List<Integer> AdjacentToOpponentPieces = new LinkedList<Integer>();
 			for(int i = 0; i < _set.length; i++)
 			{
-				if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
+				if(_set[i]!=null)
 				{
-					
+					if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
+						OpposingPlayersPieces.add(i);
+					if(_set[i].getColor().toUpperCase().equals(mypiececolor))
+						CurrentPlayerPieces.add(i);
 				}
 			}
+			for(int i = 0; i < OpposingPlayersPieces.size(); i++)
+			{
+				
+			}
+			
 			return 0;
 		}
 		
@@ -763,6 +772,39 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			
 			return heuristicScore;
 		}
+		
+		public int RelativeKings(String player)
+		{
+			String opponentpiececolor = "";
+			String opposingplayer = "";
+			String mypiececolor = "";
+			if(player.equals("White"))
+			{
+				opponentpiececolor = "B";
+				opposingplayer = "Black";
+				mypiececolor = "W";
+			}
+			else
+			{
+				opponentpiececolor = "W";
+				opposingplayer = "White";
+				mypiececolor = "B";
+			}
+			int opponentkings = 0;
+			int mykings = 0;
+			for(int i = 0; i < _set.length; i++)
+			{
+				if(_set[i]!=null)
+					if(_set[i].getColor().equals(player))
+						if(_set[i].isKing())
+							mykings++;
+					else if(_set[i].getColor().equals(opposingplayer))
+						if(_set[i].isKing())
+							opponentkings++;
+			}
+			return 0;
+			//return mykings - opponentkings;
+		}
 
 		@Override
 	public int analyzeML(String player, MLControllerConstants playercontrols, MLWeightConstants playerweights) {
@@ -785,6 +827,8 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (poleheuristic(player) * playerweights._POLE);
 		if(playercontrols._RELATIVECOUNT)
 			heuristicScore += (relativecountheuristic(player) * playerweights._RELATIVECOUNT);
+		if(playercontrols._RELATIVEKINGS)
+			heuristicScore += (RelativeKings(player) * playerweights._RELATIVECOUNT);
 		
 		return heuristicScore;
 	}

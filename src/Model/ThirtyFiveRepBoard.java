@@ -583,7 +583,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			mypiececolor = "B";
 		}
 			
-		List<ThirtyFiveRepCheckerPiece> OpposingPlayersPieces = new LinkedList<ThirtyFiveRepCheckerPiece>();
+		List<Integer> OpposingPlayersPieces = new LinkedList<Integer>();
+		List<Integer> CurrentPlayerPieces = new LinkedList<Integer>();
 		for(int i = 0; i < _set.length; i++)
 		{
 			if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))

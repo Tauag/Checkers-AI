@@ -16,8 +16,7 @@ public class AlphaBeta {
 				maxAction = a;
 				maxValue = temp;
 			}
-		}
-		
+		}		
 		return maxAction;
 	}
 	

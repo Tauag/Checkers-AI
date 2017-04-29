@@ -7,3 +7,4 @@ _KCENT = true
 _MOB = true
 _POLE = true
 _RELATIVECOUNT = true
+_RELATIVEKINGS = true
