@@ -25,8 +25,8 @@ public class AlphaBeta {
 		if(state.isTerminal())
 			return state.utility(player);
 		else if(maxDepth == 0){
-			System.out.println("**************************************");
-			state.printState();
+//			System.out.println("**************************************");
+//			state.printState();
 			return state.analyze(player);}
 		else{
 			int value = Integer.MAX_VALUE;
@@ -50,8 +50,8 @@ public class AlphaBeta {
 		if(state.isTerminal())
 			return state.utility(player);
 		else if(maxDepth == 0){
-			System.out.println("**************************************");
-			state.printState();
+//			System.out.println("**************************************");
+//			state.printState();
 			return state.analyze(player);}
 		else{
 			int value = Integer.MIN_VALUE;
