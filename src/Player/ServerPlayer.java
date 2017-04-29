@@ -6,10 +6,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
+
 import Model.Location;
 import Model.Move;
 
 public class ServerPlayer extends GeneralPlayer{
+	// This is intended to work on a University of Connecticut server, only used for class presentation
 	private final static String _user = "1";
     private final static String _password = "109524";
     private final static String _opponent = "0";
@@ -145,23 +148,56 @@ public class ServerPlayer extends GeneralPlayer{
 		return samcoord;
 	}
 	
+	/*
+	 * Outputs a command string tailored for the server's input
+	 */
 	public String moveToCommand(Move move){
-		String retString = "Move:" + getPlayer() + ":" + samuelToXY(move.old_coordinate);
+		String retString = samuelToXY(move.old_coordinate).toString();
 		int compCoord = move.old_coordinate;
 		int travel;
 		
-		for(int kill : move._kills){
-			travel = (compCoord - kill) * 2;
-			retString += (":" + samuelToXY(kill + travel)); 
-			compCoord = kill + travel;
+		if(move._kills.size() > 1){
+			for(int kill : move._kills){
+				travel = (compCoord - kill) * 2;
+				retString += (":" + samuelToXY(compCoord - travel)); 
+				compCoord = compCoord - travel;
+			}
+		}
+		if(move.old_coordinate != move.new_coordinate && move.new_coordinate != compCoord)
+			retString += (":" + samuelToXY(move.new_coordinate));
+		
+		return retString;
+	}
+	
+	/*
+	 * Outputs a Move object that can be used on the board
+	 */
+	public Move commandToMove(String command){
+		String[] command_parts = command.split(":");
+		int movelength = command_parts.length;
+		Move retmove = new Move(xyToSamuel(Character.getNumericValue(command_parts[2].charAt(1)), Character.getNumericValue(command_parts[3].charAt(0))));
+		retmove.new_coordinate = 
+				xyToSamuel(Character.getNumericValue(command_parts[movelength - 2].charAt(1)), Character.getNumericValue(command_parts[movelength - 1].charAt(0)));
+		
+		if(Math.abs(retmove.old_coordinate - retmove.new_coordinate) > 5 || movelength > 6){
+			int sam, lastsam, diff;
+			lastsam = retmove.old_coordinate;
+			
+			for(int i = 4; i < movelength; i+=2){
+				sam = xyToSamuel(Character.getNumericValue(command_parts[i].charAt(1)), Character.getNumericValue(command_parts[i+1].charAt(0)));
+				diff = (sam - lastsam) / 2;
+				retmove.addToKills((sam - diff));
+				lastsam = sam;
+			}
 		}
 		
-		retString += (":" + samuelToXY(move.new_coordinate));
-		return retString;
+		
+		return retmove;
 	}
 	
 	public void runPlayer(){
 		String readMessage;
+		Move nextMove;
 		
 		try{
 			readAndEcho(); // start message
@@ -187,19 +223,31 @@ public class ServerPlayer extends GeneralPlayer{
     	    // depends on color--a black move if i am white, Move:Black:i:j
     	    // otherwise a query to move, ?Move(time):
     	    if (getPlayer().equals("White")) {
-    		readMessage = readAndEcho();  // move query
-    		writeMessageAndEcho("(2:4):(3:5)");
-    		readMessage = readAndEcho();  // white move
-    		readMessage = readAndEcho();  // black move
-    		readMessage = readAndEcho();  // move query
-    		// here you would need to move again
+    	    	while(!gameOver()){
+    	    		if(!readMessage.split(":")[0].equals("Result"))
+	    	    		advanceMove(commandToMove(readMessage));
+    	    		
+			    	readMessage = readAndEcho();  // move query
+			    	nextMove = findBestPlayerMove();
+			    	System.out.println(nextMove);
+			    	writeMessageAndEcho(moveToCommand(nextMove));
+			    	readMessage = readAndEcho();  // white move
+			    	readMessage = readAndEcho();  // black move
+    	    	}
     	    }
     	    else {
-    		writeMessageAndEcho("(5:3):(4:4)");
-    		readMessage = readAndEcho();  // black move
-    		readMessage = readAndEcho();  // white move
-    		readMessage = readAndEcho();  // move query
-    		// here you would need to move again
+    	    	while(!gameOver()){
+	    	    	nextMove = findBestPlayerMove();
+			    	System.out.println(nextMove);
+			    	writeMessageAndEcho(moveToCommand(nextMove));
+			    	readMessage = readAndEcho();  // black move
+			    	readMessage = readAndEcho();  // white move
+			    		
+			    	if(!readMessage.split(":")[0].equals("Result"))
+			    		advanceMove(commandToMove(readMessage));
+			    		
+			    	readMessage = readAndEcho();  // move query
+    	    	}
     	    }
     	   
     	    getSocket().close();
@@ -212,9 +260,6 @@ public class ServerPlayer extends GeneralPlayer{
     
     public static void main(String[] argv){
     	ServerPlayer sp = new ServerPlayer();
-    	sp.setPlayer("Black");
-    	Move mv = sp.findBestPlayerMove();
-    	System.out.println(mv);
-    	System.out.println(sp.moveToCommand(mv));
+    	sp.runPlayer();
     }
 }

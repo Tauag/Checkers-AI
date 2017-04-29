@@ -12,6 +12,7 @@ public class Move{
 		old_coordinate = oldinput;
 		_kills = new LinkedList<Integer>();
 	}
+	
 	public Move(int oldcoord, int newcoord, int kill)
 	{
 		old_coordinate = oldcoord;
