@@ -224,24 +224,41 @@ public class ServerPlayer extends GeneralPlayer{
     	    // otherwise a query to move, ?Move(time):
     	    if (getPlayer().equals("White")) {
     	    	while(!gameOver()){
+    	    		if(readMessage.equals("read: null"))
+    	    			break;
+    	    		
     	    		if(!readMessage.split(":")[0].equals("Result"))
 	    	    		advanceMove(commandToMove(readMessage));
     	    		
 			    	readMessage = readAndEcho();  // move query
-			    	nextMove = findBestPlayerMove();
-			    	System.out.println(nextMove);
-			    	writeMessageAndEcho(moveToCommand(nextMove));
-			    	readMessage = readAndEcho();  // white move
-			    	readMessage = readAndEcho();  // black move
+			    	
+			    	if(readMessage.equals("read: null"))
+    	    			break;
+			    	
+			    	if(!readMessage.split(":")[0].equals("Result")){
+				    	nextMove = findBestPlayerMove();
+				    	System.out.println(nextMove);
+				    	writeMessageAndEcho(moveToCommand(nextMove));
+				    	readMessage = readAndEcho();  // white move
+				    	readMessage = readAndEcho();  // black move
+			    	}
     	    	}
     	    }
     	    else {
     	    	while(!gameOver()){
-	    	    	nextMove = findBestPlayerMove();
-			    	System.out.println(nextMove);
-			    	writeMessageAndEcho(moveToCommand(nextMove));
-			    	readMessage = readAndEcho();  // black move
-			    	readMessage = readAndEcho();  // white move
+    	    		if(readMessage.equals("read: null"))
+    	    			break;
+    	    		
+    	    		if(!readMessage.split(":")[0].equals("Result")){
+		    	    	nextMove = findBestPlayerMove();
+				    	System.out.println(nextMove);
+				    	writeMessageAndEcho(moveToCommand(nextMove));
+				    	readMessage = readAndEcho();  // black move
+				    	readMessage = readAndEcho();  // white move
+    	    		}
+    	    		
+    	    		if(readMessage.equals("read: null"))
+    	    			break;
 			    		
 			    	if(!readMessage.split(":")[0].equals("Result"))
 			    		advanceMove(commandToMove(readMessage));
