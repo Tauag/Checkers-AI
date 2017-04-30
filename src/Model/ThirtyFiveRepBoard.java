@@ -1,4 +1,5 @@
 package Model;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import Controller.WeightConstants;
@@ -523,6 +524,8 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (poleheuristic(player) * WeightConstants._POLE);
 		if(ControllerConstants._RELATIVECOUNT)
 			heuristicScore += (relativecountheuristic(player) * WeightConstants._RELATIVECOUNT);
+		if(ControllerConstants._AGGRO)
+			heuristicScore += (AGGRO(player) * WeightConstants._AGGRO);
 		
 		return heuristicScore;
 	}
@@ -566,6 +569,77 @@ public class ThirtyFiveRepBoard implements CheckersGameState{
 		}
 //		System.out.println(heuristicScore);
 		return heuristicScore;
+	}
+	
+	public int AGGRO(String player)
+	{
+		int total = 0;
+		String opponentpiececolor = "";
+		String mypiececolor = "";
+		if(player.equals("White"))
+		{
+			opponentpiececolor = "B";
+			mypiececolor = "W";
+		}
+		else
+		{
+			opponentpiececolor = "W";
+			mypiececolor = "B";
+		}		
+		List<Integer> OpposingPlayersPieces = new ArrayList<Integer>();
+		List<Integer> CurrentPlayerPieces = new ArrayList<Integer>();
+		List<Integer> AdjacentToOpponentPieces = new ArrayList<Integer>();
+		List<Integer> AdjacentToAdjacentPieces = new ArrayList<Integer>();
+		for(int i = 0; i < _set.length; i++)
+		{
+			if(_set[i]!=null)
+			{
+				if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
+					OpposingPlayersPieces.set(i, 1);
+				if(_set[i].getColor().toUpperCase().equals(mypiececolor))
+					CurrentPlayerPieces.set(i, 1);
+			}
+		}
+		for(int i = 0; i < OpposingPlayersPieces.size(); i++)
+		{
+			int coordinate = OpposingPlayersPieces.get(i);
+			if(coordinate-4 > 0)
+				AdjacentToOpponentPieces.set(coordinate-4, 1);
+			if(coordinate-5 > 0)
+				AdjacentToOpponentPieces.set(coordinate-5, 1);
+			if(coordinate+4 < 35)
+				AdjacentToOpponentPieces.set(coordinate+4, 1);
+			if(coordinate+5 < 35)
+				AdjacentToOpponentPieces.set(coordinate+5, 1);
+		}
+		for(int i = 0; i < AdjacentToOpponentPieces.size(); i++)
+		{
+			int coordinate = OpposingPlayersPieces.get(i);
+			if(coordinate-4 > 0)
+				AdjacentToAdjacentPieces.set(coordinate-4, 1);
+			if(coordinate-5 > 0)
+				AdjacentToAdjacentPieces.set(coordinate-5, 1);
+			if(coordinate+4 < 35)
+				AdjacentToAdjacentPieces.set(coordinate+4, 1);
+			if(coordinate+5 < 35)
+				AdjacentToAdjacentPieces.set(coordinate+5, 1);
+		}
+		for(int i = 0; i < CurrentPlayerPieces.size(); i++ )
+		{
+			if(CurrentPlayerPieces.get(i) == 1)
+			{
+				/*
+				if(AdjacentToAdjacentPieces.get(i) == 1)
+					total++;
+				else if(AdjacentToOpponentPieces.get(i) == 1)
+					total--;
+					*/
+				if(AdjacentToOpponentPieces.get(i) == 1)
+					total++;
+			}
+		}
+		
+		return total;
 	}
 	
 	

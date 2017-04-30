@@ -13,9 +13,9 @@ import Model.Move;
 
 public class ServerPlayer extends GeneralPlayer{
 	// This is intended to work on a University of Connecticut server, only used for class presentation
-	private final static String _user = "1";
-    private final static String _password = "109524";
-    private final static String _opponent = "0";
+	private final static String _user = "2";
+    private final static String _password = "762379";
+    private final static String _opponent = "1";
     private final String _machine  = "icarus.engr.uconn.edu"; 
     private int _port = 3499;
     private Socket _socket = null;

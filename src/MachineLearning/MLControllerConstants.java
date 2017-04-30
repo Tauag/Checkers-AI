@@ -7,6 +7,7 @@ import java.io.IOException;
 public class MLControllerConstants {
 	public boolean _ADV = true;
 	public boolean _APEX = true;
+	public boolean _AGGRO = true;
 	public boolean _BACK = true;
 	public boolean _CENT = true;
 	public boolean _CNTR = true;
@@ -29,6 +30,9 @@ public class MLControllerConstants {
 			lineresult = myreadline.split(" ");
 			if(lineresult[2].equals("false"))
 				_ADV = false;
+			lineresult = myreadline.split(" ");
+			if(lineresult[2].equals("false"))
+				_AGGRO = false;
 			lineresult = myreadline.split(" ");
 			if(lineresult[2].equals("false"))
 				_APEX = false;

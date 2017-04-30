@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class MLWeightConstants {
 	public int _ADV = 1;
+	public int _AGGRO = 1;
 	public int _APEX = 1;
 	public int _BACK = 1;
 	public int _CENT = 1;
@@ -29,6 +30,8 @@ public class MLWeightConstants {
 			lineresult = myreadline.split(" ");
 			if(lineresult[2].equals("Integer.parseInt(lineresult[2])"))
 				_ADV = Integer.parseInt(lineresult[2]);
+			lineresult = myreadline.split(" ");
+				_AGGRO = Integer.parseInt(lineresult[2]);
 			lineresult = myreadline.split(" ");
 				_APEX = Integer.parseInt(lineresult[2]);
 			lineresult = myreadline.split(" ");

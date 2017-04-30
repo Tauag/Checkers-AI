@@ -1,4 +1,5 @@
 package Model;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import Controller.ControllerConstants;
@@ -570,6 +571,7 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 		
 		public int AGGRO(String player)
 		{
+			int total = 0;
 			String opponentpiececolor = "";
 			String mypiececolor = "";
 			if(player.equals("White"))
@@ -582,25 +584,56 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 				opponentpiececolor = "W";
 				mypiececolor = "B";
 			}		
-			List<Integer> OpposingPlayersPieces = new LinkedList<Integer>();
-			List<Integer> CurrentPlayerPieces = new LinkedList<Integer>();
-			List<Integer> AdjacentToOpponentPieces = new LinkedList<Integer>();
+			List<Integer> OpposingPlayersPieces = new ArrayList<Integer>();
+			List<Integer> CurrentPlayerPieces = new ArrayList<Integer>();
+			List<Integer> AdjacentToOpponentPieces = new ArrayList<Integer>();
+			List<Integer> AdjacentToAdjacentPieces = new ArrayList<Integer>();
 			for(int i = 0; i < _set.length; i++)
 			{
 				if(_set[i]!=null)
 				{
 					if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
-						OpposingPlayersPieces.add(i);
+						OpposingPlayersPieces.set(i, 1);
 					if(_set[i].getColor().toUpperCase().equals(mypiececolor))
-						CurrentPlayerPieces.add(i);
+						CurrentPlayerPieces.set(i, 1);
 				}
 			}
 			for(int i = 0; i < OpposingPlayersPieces.size(); i++)
 			{
-				
+				int coordinate = OpposingPlayersPieces.get(i);
+				if(coordinate-4 > 0)
+					AdjacentToOpponentPieces.set(coordinate-4, 1);
+				if(coordinate-5 > 0)
+					AdjacentToOpponentPieces.set(coordinate-5, 1);
+				if(coordinate+4 < 35)
+					AdjacentToOpponentPieces.set(coordinate+4, 1);
+				if(coordinate+5 < 35)
+					AdjacentToOpponentPieces.set(coordinate+5, 1);
+			}
+			for(int i = 0; i < AdjacentToOpponentPieces.size(); i++)
+			{
+				int coordinate = OpposingPlayersPieces.get(i);
+				if(coordinate-4 > 0)
+					AdjacentToAdjacentPieces.set(coordinate-4, 1);
+				if(coordinate-5 > 0)
+					AdjacentToAdjacentPieces.set(coordinate-5, 1);
+				if(coordinate+4 < 35)
+					AdjacentToAdjacentPieces.set(coordinate+4, 1);
+				if(coordinate+5 < 35)
+					AdjacentToAdjacentPieces.set(coordinate+5, 1);
+			}
+			for(int i = 0; i < CurrentPlayerPieces.size(); i++ )
+			{
+				if(CurrentPlayerPieces.get(i) == 1)
+				{
+					if(AdjacentToAdjacentPieces.get(i) == 1)
+						total++;
+					else if(AdjacentToOpponentPieces.get(i) == 1)
+						total--;
+				}
 			}
 			
-			return 0;
+			return total;
 		}
 		
 		/*
@@ -811,6 +844,8 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 		int heuristicScore = 0;			
 		if(playercontrols._ADV)
 			heuristicScore += (advheuristic(player) * playerweights._ADV);
+		if(playercontrols._AGGRO)
+			heuristicScore += (apexheuristic(player) * playerweights._AGGRO);
 		if(playercontrols._APEX)
 			heuristicScore += (apexheuristic(player) * playerweights._APEX);
 		if(playercontrols._BACK)

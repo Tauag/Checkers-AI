@@ -41,7 +41,7 @@ public class MLRunner {
 				System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
 			}
 			System.out.println(Board.player());
-			
+			/*
 			if(Board.player().equals("White"))
 			{
 				ReGenerateWeights("Black");
@@ -50,6 +50,7 @@ public class MLRunner {
 			{
 				ReGenerateWeights("White");
 			}
+			*/
 	}
 	
 	public static void ReGenerateWeights(String winner) throws IOException
@@ -63,16 +64,16 @@ public class MLRunner {
 			BufferedReader MyReader = new BufferedReader(new FileReader(new File("Player1weight.txt")));
 			while((line = MyReader.readLine()) != null)
 			{
-				System.out.println(line);
+				//System.out.println(line);
 				LineList.add(line.split(" "));
 			}
 			MyReader.close();
 			BufferedWriter MyWriter = new BufferedWriter(new FileWriter(new File("Player1weight.txt")));
 			for(int i = 0; i < LineList.size(); i++)
 			{
-				LineList.get(i)[2] = Integer.toString((rand.nextInt(5) + 1));
+				LineList.get(i)[2] = Integer.toString((rand.nextInt(11) - 5));
 				towrite = LineList.get(i)[0] + " " + LineList.get(i)[1] + " " + LineList.get(i)[2];
-				System.out.println(towrite);
+				//System.out.println(towrite);
 				MyWriter.write(towrite);
 				MyWriter.newLine();
 			}
@@ -84,16 +85,16 @@ public class MLRunner {
 			BufferedReader MyReader = new BufferedReader(new FileReader(new File("Player2weight.txt")));
 			while((line = MyReader.readLine()) != null)
 			{
-				System.out.println(line);
+				//System.out.println(line);
 				LineList.add(line.split(" "));
 			}
 			MyReader.close();
 			BufferedWriter MyWriter = new BufferedWriter(new FileWriter(new File("Player2weight.txt")));
 			for(int i = 0; i < LineList.size(); i++)
 			{
-				LineList.get(i)[2] = Integer.toString((rand.nextInt(5) + 1));
+				LineList.get(i)[2] = Integer.toString((rand.nextInt(11) - 5));
 				towrite = LineList.get(i)[0] + " " + LineList.get(i)[1] + " " + LineList.get(i)[2];
-				System.out.println(towrite);
+				//System.out.println(towrite);
 				MyWriter.write(towrite);
 				MyWriter.newLine();
 			}

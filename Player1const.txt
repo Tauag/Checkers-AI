@@ -1,4 +1,5 @@
 _ADV = true
+_AGGRO = true
 _APEX = true
 _BACK = true
 _CENT = true
