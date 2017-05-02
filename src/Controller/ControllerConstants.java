@@ -11,6 +11,7 @@ public class ControllerConstants {
 	public static final boolean _MOB = true;
 	public static final boolean _POLE = true;
 	public static final boolean _RELATIVECOUNT = true;
+	public static final boolean _RELATIVEKINGS = true;
 	
 	public static final int _MAXDEPTH = 3;
 }
