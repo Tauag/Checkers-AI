@@ -39,7 +39,11 @@ public class MLAlphaBeta {
 		else if(maxDepth == 0){
 //			System.out.println("**************************************");
 //			state.printState();
-			return state.analyzeML(player, P2Constants, P2Weights);}
+			if(player.equals("Black"))
+				return state.analyzeML(player, P1Constants, P1Weights);
+			else
+				return state.analyzeML(player, P2Constants, P2Weights);
+		}
 		else{
 			int value = Integer.MAX_VALUE;
 			int temp;
@@ -64,7 +68,10 @@ public class MLAlphaBeta {
 		else if(maxDepth == 0){
 //			System.out.println("**************************************");
 //			state.printState();
-			return state.analyzeML(player, P1Constants, P1Weights);}
+			if(player.equals("Black"))
+				return state.analyzeML(player, P1Constants, P1Weights);
+			else
+				return state.analyzeML(player, P2Constants, P2Weights);}
 		else{
 			int value = Integer.MIN_VALUE;
 			int temp;

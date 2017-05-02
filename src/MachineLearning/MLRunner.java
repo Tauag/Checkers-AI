@@ -16,11 +16,13 @@ public class MLRunner {
 	
 	public static void main(String[] args) throws IOException
 	{
-
+		for(int i = 0; i < 50; i++)
+		{
 			//Initialize all the tools we need
-			ReGenerateWeights("Black");
-			ReGenerateWeights("White");
+			//ReGenerateWeights("Black");
+			//ReGenerateWeights("White");
 			int movestaken = 0;
+			int maxmoves = 100;
 			ThirtyFiveRepCheckerPiece[] set = new ThirtyFiveRepCheckerPiece[35];
 			MLControllerConstants p1const = new MLControllerConstants("Player1const.txt");
 			MLWeightConstants p1weights = new MLWeightConstants("Player1weight.txt");
@@ -30,27 +32,43 @@ public class MLRunner {
 			MLAlphaBeta Tester = new MLAlphaBeta(p1const, p1weights, p2const, p2weights);
 			MLThirtyFiveRepBoard Board = new MLThirtyFiveRepBoard("Black", set);
 			Board.initBoard();
-			while(!Board.isTerminal() && movestaken<150)
+			while(!Board.isTerminal() && movestaken<maxmoves)
 			{
 				movestaken++;
-				System.out.println("**********************************");
+				//System.out.println("**********************************");
 				double start = System.nanoTime();
 				Board =  (MLThirtyFiveRepBoard) Board.result(Tester.alphabeta(Board, 9));
 				double end = System.nanoTime();
-				Board.printState();				
-				System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
+				//Board.printState();				
+				//System.out.println("Time taken: " + (end - start) / 1000000 + "ms");
 			}
 			System.out.println(Board.player());
-			/*
-			if(Board.player().equals("White"))
+			Board.printState();
+			if(movestaken != maxmoves)
 			{
-				ReGenerateWeights("Black");
+				if(Board.player().equals("Black"))
+				{
+					ReGenerateWeights("Black");
+				}
+				else
+				{
+					ReGenerateWeights("White");
+				}
 			}
 			else
 			{
-				ReGenerateWeights("White");
+				if(Board.WhoHasMorePieces().equals("Black"))
+				{
+					System.out.println("We are regenerating: White");
+					ReGenerateWeights("White");
+				}
+				else if (Board.WhoHasMorePieces().equals("White"))
+				{
+					System.out.println("We are regenerating: Black");
+					ReGenerateWeights("Black");
+				}
 			}
-			*/
+		}
 	}
 	
 	public static void ReGenerateWeights(String winner) throws IOException
@@ -59,7 +77,7 @@ public class MLRunner {
 		ArrayList<String[]> LineList = new ArrayList<String[]>();
 		String line = "";
 		String towrite = "";
-		if(winner.equals("White"))
+		if(winner.equals("Black"))
 		{
 			BufferedReader MyReader = new BufferedReader(new FileReader(new File("Player1weight.txt")));
 			while((line = MyReader.readLine()) != null)

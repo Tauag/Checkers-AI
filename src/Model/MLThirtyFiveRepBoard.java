@@ -1,5 +1,6 @@
 package Model;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import Controller.ControllerConstants;
@@ -482,6 +483,24 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			return true;
 		}
 		
+		public String WhoHasMorePieces()
+		{
+				int blackpieces = 0;
+				int whitepieces = 0;
+				for(int i = 0; i < 35; i++){
+					if(_set[i] != null){
+						if(_set[i].getColor().equals("White"))
+							whitepieces++;
+						if(_set[i].getColor().equals("Black"))
+							blackpieces++;
+					}
+				}
+				if(whitepieces > blackpieces)
+					return "White";
+				else
+					return "Black";
+		}
+		
 		/*
 		 * Clones a board
 		 */
@@ -569,6 +588,8 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			return heuristicScore;
 		}
 		
+		
+		//This gives a point or every piece of the player's in a spot adjacent to a spot adjacent to an opponent's piece.
 		public int AGGRO(String player)
 		{
 			int total = 0;
@@ -576,63 +597,66 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			String mypiececolor = "";
 			if(player.equals("White"))
 			{
-				opponentpiececolor = "B";
-				mypiececolor = "W";
+				opponentpiececolor = "Black";
+				mypiececolor = "White";
 			}
 			else
 			{
 				opponentpiececolor = "W";
 				mypiececolor = "B";
 			}		
-			List<Integer> OpposingPlayersPieces = new ArrayList<Integer>();
-			List<Integer> CurrentPlayerPieces = new ArrayList<Integer>();
-			List<Integer> AdjacentToOpponentPieces = new ArrayList<Integer>();
-			List<Integer> AdjacentToAdjacentPieces = new ArrayList<Integer>();
+			Hashtable<Integer,Integer> OpposingPlayersPieces = new Hashtable<Integer,Integer>();
+			Hashtable<Integer,Integer> CurrentPlayerPieces = new Hashtable<Integer,Integer>();
+			Hashtable<Integer,Integer> AdjacentToOpponentPieces = new Hashtable<Integer,Integer>();
+			Hashtable<Integer,Integer> AdjacentToAdjacentPieces = new Hashtable<Integer,Integer>();
 			for(int i = 0; i < _set.length; i++)
 			{
 				if(_set[i]!=null)
 				{
-					if(_set[i].getColor().toUpperCase().equals(opponentpiececolor))
-						OpposingPlayersPieces.set(i, 1);
-					if(_set[i].getColor().toUpperCase().equals(mypiececolor))
-						CurrentPlayerPieces.set(i, 1);
+					if(_set[i].getColor().equals(opponentpiececolor))
+						OpposingPlayersPieces.put(i, i);
+					if(_set[i].getColor().equals(mypiececolor))
+						CurrentPlayerPieces.put(i, i);
 				}
 			}
-			for(int i = 0; i < OpposingPlayersPieces.size(); i++)
+			for(int i = 0; i < 35; i++)
 			{
-				int coordinate = OpposingPlayersPieces.get(i);
-				if(coordinate-4 > 0)
-					AdjacentToOpponentPieces.set(coordinate-4, 1);
-				if(coordinate-5 > 0)
-					AdjacentToOpponentPieces.set(coordinate-5, 1);
-				if(coordinate+4 < 35)
-					AdjacentToOpponentPieces.set(coordinate+4, 1);
-				if(coordinate+5 < 35)
-					AdjacentToOpponentPieces.set(coordinate+5, 1);
-			}
-			for(int i = 0; i < AdjacentToOpponentPieces.size(); i++)
-			{
-				int coordinate = OpposingPlayersPieces.get(i);
-				if(coordinate-4 > 0)
-					AdjacentToAdjacentPieces.set(coordinate-4, 1);
-				if(coordinate-5 > 0)
-					AdjacentToAdjacentPieces.set(coordinate-5, 1);
-				if(coordinate+4 < 35)
-					AdjacentToAdjacentPieces.set(coordinate+4, 1);
-				if(coordinate+5 < 35)
-					AdjacentToAdjacentPieces.set(coordinate+5, 1);
-			}
-			for(int i = 0; i < CurrentPlayerPieces.size(); i++ )
-			{
-				if(CurrentPlayerPieces.get(i) == 1)
+				if(OpposingPlayersPieces.containsKey(i))
 				{
-					if(AdjacentToAdjacentPieces.get(i) == 1)
-						total++;
-					else if(AdjacentToOpponentPieces.get(i) == 1)
-						total--;
+					int coordinate = OpposingPlayersPieces.get(i);
+					if(coordinate-4 > 0)
+						AdjacentToOpponentPieces.put(coordinate-4, coordinate-4);
+					if(coordinate-5 > 0)
+						AdjacentToOpponentPieces.put(coordinate-5, coordinate-5);
+					if(coordinate+4 < 35)
+						AdjacentToOpponentPieces.put(coordinate+4, coordinate+4);
+					if(coordinate+5 < 35)
+						AdjacentToOpponentPieces.put(coordinate+5, coordinate+5);
 				}
 			}
-			
+			for(int i = 0; i < 35; i++)
+			{
+				if(AdjacentToOpponentPieces.containsKey(i))
+				{
+					int coordinate = AdjacentToOpponentPieces.get(i);
+					if(coordinate-4 > 0)
+						AdjacentToAdjacentPieces.put(coordinate-4, coordinate-4);
+					if(coordinate-5 > 0)
+						AdjacentToAdjacentPieces.put(coordinate-5, coordinate-5);
+					if(coordinate+4 < 35)
+						AdjacentToAdjacentPieces.put(coordinate+4, coordinate+4);
+					if(coordinate+5 < 35)
+						AdjacentToAdjacentPieces.put(coordinate+5, coordinate+5);
+				}
+			}
+			for(int i = 0; i < 35; i++ )
+			{
+				if(CurrentPlayerPieces.containsKey(i))
+				{
+					if(AdjacentToAdjacentPieces.containsKey(i))
+						total++;
+				}
+			}
 			return total;
 		}
 		
@@ -805,23 +829,17 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			
 			return heuristicScore;
 		}
-		
+		//Number of kings you have - your opponent has
 		public int RelativeKings(String player)
 		{
-			String opponentpiececolor = "";
 			String opposingplayer = "";
-			String mypiececolor = "";
 			if(player.equals("White"))
 			{
-				opponentpiececolor = "B";
 				opposingplayer = "Black";
-				mypiececolor = "W";
 			}
 			else
 			{
-				opponentpiececolor = "W";
 				opposingplayer = "White";
-				mypiececolor = "B";
 			}
 			int opponentkings = 0;
 			int mykings = 0;
@@ -835,17 +853,16 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 						if(_set[i].isKing())
 							opponentkings++;
 			}
-			return 0;
-			//return mykings - opponentkings;
+			return mykings - opponentkings;
 		}
 
-		@Override
+	@Override
 	public int analyzeML(String player, MLControllerConstants playercontrols, MLWeightConstants playerweights) {
 		int heuristicScore = 0;			
 		if(playercontrols._ADV)
 			heuristicScore += (advheuristic(player) * playerweights._ADV);
 		if(playercontrols._AGGRO)
-			heuristicScore += (apexheuristic(player) * playerweights._AGGRO);
+			heuristicScore += (AGGRO(player) * playerweights._AGGRO);
 		if(playercontrols._APEX)
 			heuristicScore += (apexheuristic(player) * playerweights._APEX);
 		if(playercontrols._BACK)
@@ -864,7 +881,6 @@ public class MLThirtyFiveRepBoard implements CheckersGameState{
 			heuristicScore += (relativecountheuristic(player) * playerweights._RELATIVECOUNT);
 		if(playercontrols._RELATIVEKINGS)
 			heuristicScore += (RelativeKings(player) * playerweights._RELATIVECOUNT);
-		
 		return heuristicScore;
 	}
 }
