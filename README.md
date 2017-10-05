@@ -11,7 +11,7 @@ The design of the AI and project as a whole is based on A.L.Samuel's paper:
 
 <b>The Original Team:</b>
 
-Gavin Li <a href="https://github.com/TaurusSilver">@TaurusSilver</a>
+Gavin Li <a href="https://github.com/Tauag">@Tauag</a>
 
 Patryk Rus <a href="https://github.com/Validissimus">@Validissimus</a>
 
